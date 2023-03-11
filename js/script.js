@@ -22,3 +22,8 @@ submitButton.addEventListener("click", () => {
 
 const body = document.querySelector("body");
 body.appendChild(currentTask);
+
+nextButton.addEventListener("click", () => {
+    currentTaskIndex = (currentTaskIndex + 1) % tasks.length;
+    textNode.textContent = tasks[currentTaskIndex];
+});
