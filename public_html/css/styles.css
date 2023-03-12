@@ -18,12 +18,13 @@ h1 {
 }
 
 .input,
-.taskDiv {
+.taskDiv, button, #submitButton {
     font-family: 'Nunito Sans', sans-serif;
 }
 
 .input {
     flex: 0;
+    width: 100vw;
 }
 
 label,
@@ -36,6 +37,25 @@ p {
     font-size: 2rem;
 }
 
+#task {
+    background-color: #F5F5F5;
+    border-style: none;
+    border: 1px solid;
+    width: 50%;
+    height: 32px;
+    text-align: center;
+    font-size: 1rem;
+}
+
 .taskDiv {
     flex: 3;
+}
+
+button,
+#submitButton {
+    background-color: #A6D8F6;
+    border-style: none;
+    border: 1px solid;
+    border-radius: 5%;
+    padding: 8px 16px;
 }
