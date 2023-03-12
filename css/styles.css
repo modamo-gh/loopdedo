@@ -17,7 +17,8 @@ h1 {
     flex: 1;
 }
 
-.input {
+.input,
+p {
     font-family: 'Nunito Sans', sans-serif;
     flex: 2;
 }
@@ -27,6 +28,7 @@ input {
     margin: 16px;
 }
 
+label,
 p {
-    flex: 2;
+    font-size: 2rem;
 }

@@ -10,17 +10,17 @@ const nextButton = document.createElement("button");
 nextButton.textContent = "NEXT";
 
 let currentTaskIndex = 0;
+const container = document.querySelector(".container");
 
 submitButton.addEventListener("click", () => {
     tasks.push(taskInput.value);
 
     if(tasks.length === 1){
         textNode.textContent = tasks[currentTaskIndex];
-        body.appendChild(nextButton);
+        container.appendChild(nextButton);
     }
 })
 
-const container = document.querySelector(".container");
 container.appendChild(currentTask);
 
 nextButton.addEventListener("click", () => {
