@@ -19,10 +19,14 @@ h1 {
 
 .input {
     font-family: 'Nunito Sans', sans-serif;
-    flex: 3;
+    flex: 2;
 }
 
 label,
 input {
     margin: 16px;
+}
+
+p {
+    flex: 2;
 }
