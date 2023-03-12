@@ -18,9 +18,12 @@ h1 {
 }
 
 .input,
-p {
+.taskDiv {
     font-family: 'Nunito Sans', sans-serif;
-    flex: 2;
+}
+
+.input {
+    flex: 0;
 }
 
 label,
@@ -31,4 +34,8 @@ input {
 label,
 p {
     font-size: 2rem;
+}
+
+.taskDiv {
+    flex: 3;
 }
