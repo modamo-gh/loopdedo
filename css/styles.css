@@ -1,0 +1,28 @@
+body {
+    background-color: #BDB2FF;
+    height: 100vh;
+}
+
+div {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    font-family: 'Pacifico', cursive;
+    text-align: center;
+    font-size: 3rem;
+    flex: 1;
+}
+
+.input {
+    font-family: 'Nunito Sans', sans-serif;
+    flex: 3;
+}
+
+label,
+input {
+    margin: 16px;
+}
