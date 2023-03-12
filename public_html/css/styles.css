@@ -1,13 +1,27 @@
-body {
-    background-color: #BDB2FF;
+html, body {
     height: 100vh;
+    width: 100vw;
+    overflow: hidden;
 }
 
-div {
+body {
+    background-color: #BDB2FF;
+    display: flex;
+    margin: 0;
+}
+
+.taskSidebar {
+    flex: 1 0 13%;
+    background-color: #ffc1d8;
+}
+
+.container {
     height: 100vh;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
+    flex: 3;
 }
 
 h1 {
