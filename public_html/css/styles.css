@@ -76,6 +76,10 @@ p {
     text-align: center;
 }
 
+.tasks {
+    font-weight: bold;
+}
+
 button,
 #submitButton {
     background-color: #A6D8F6;

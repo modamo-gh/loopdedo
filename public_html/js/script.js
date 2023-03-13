@@ -22,6 +22,13 @@ submitButton.addEventListener("click", () => {
         textNode.textContent = tasks[currentTaskIndex];
         taskDiv.appendChild(nextButton);
     }
+
+    const taskP = document.createElement("p");
+    taskP.textContent = taskInput.value;
+
+    const sidebar = document.querySelector(".taskSidebar");
+
+    sidebar.appendChild(taskP);
 })
 
 taskDiv.appendChild(currentTask);
