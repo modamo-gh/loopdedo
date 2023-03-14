@@ -10,13 +10,13 @@ body {
 }
 
 header, footer {
+    display: flex;
     flex: 1;
+    align-items: center;
     background-color: #CA7ADC;
 }
 
-header {
-    display: flex;
-    align-items: center;
+header, footer {
     text-align: center;
 }
 
@@ -25,6 +25,9 @@ h1 {
     font-size: 2rem;
     margin: 0;
     height: fit-content;
+}
+
+h1, footer p {
     transform: translateX(-50%);
     position: relative;
     left: 10%;
@@ -35,6 +38,10 @@ h1 {
     display: flex;
 }
 
+.content, footer {
+    font-family: 'Nunito Sans', sans-serif;
+}
+
 .sidebar {
     flex: 1;
     background-color: #A659B9;
@@ -42,12 +49,27 @@ h1 {
 
 h2 {
     text-align: center;
-    font-family: 'Nunito Sans', sans-serif;
 }
 
 .mainContent {
     flex: 4;
     background-color: #BDB2FF;
+    display: flex;
+    flex-direction: column;
+}
+
+footer {
+    justify-content: space-between;
+}
+
+p {
+    margin: 0;
+}
+
+img {
+    height: 32px;
+    color: #ED6561;
+    margin: 0 16px;
 }
 
 /* html, body {
