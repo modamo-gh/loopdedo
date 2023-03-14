@@ -47,8 +47,19 @@ h1, footer p {
     background-color: #A659B9;
 }
 
-h2 {
+h2,
+.sidebar p {
     text-align: center;
+}
+
+h2 {
+    background-color: #843997;
+    margin: 0;
+    padding: 16px;
+}
+
+.sidebar p {
+    margin: 8px;
 }
 
 .mainContent {
@@ -58,18 +69,17 @@ h2 {
     flex-direction: column;
 }
 
-.taskInput, .currentTask {
-    flex: 1;
-}
-
-.taskInput {
+.taskInput,
+.currentTask {
     display: flex;
+    flex: 1;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.taskInput * {
+.taskInput *,
+.currentTask * {
     margin: 16px;
 }
 
@@ -87,13 +97,18 @@ label {
     font-size: 1rem;
 }
 
-[type="submit"] {
+[type="submit"],
+button {
     background-color: #ED6561;
     border-style: none;
     border: 1px solid;
     border-radius: 5%;
     padding: 8px 16px;
     width: fit-content;
+}
+
+.currentTask p {
+    font-size: 2rem;
 }
 
 footer {

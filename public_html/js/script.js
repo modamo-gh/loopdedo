@@ -1,6 +1,6 @@
 const tasks = [];
-const submitButton = document.querySelector("#submitButton");
-const taskInput = document.querySelector("#task");
+const submitButton = document.querySelector("[type=\"submit\"]");
+const taskInput = document.querySelector("[type=\"text\"]");
 
 const currentTask = document.createElement("p");
 let textNode = document.createTextNode("");
@@ -10,29 +10,26 @@ const nextButton = document.createElement("button");
 nextButton.textContent = "NEXT";
 
 let currentTaskIndex = 0;
-const container = document.querySelector(".container");
 
-const taskDiv = document.createElement("div")
-taskDiv.classList.add("taskDiv");
+const currentTaskDiv = document.querySelector(".currentTask");
 
 submitButton.addEventListener("click", () => {
     tasks.push(taskInput.value);
 
     if(tasks.length === 1){
         textNode.textContent = tasks[currentTaskIndex];
-        taskDiv.appendChild(nextButton);
+        currentTaskDiv.appendChild(nextButton);
     }
 
     const taskP = document.createElement("p");
     taskP.textContent = taskInput.value;
 
-    const sidebar = document.querySelector(".taskSidebar");
+    const sidebar = document.querySelector(".sidebar");
 
     sidebar.appendChild(taskP);
 })
 
-taskDiv.appendChild(currentTask);
-container.appendChild(taskDiv);
+currentTaskDiv.appendChild(currentTask);
 
 nextButton.addEventListener("click", () => {
     currentTaskIndex = (currentTaskIndex + 1) % tasks.length;
