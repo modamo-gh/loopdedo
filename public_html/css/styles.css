@@ -58,6 +58,44 @@ h2 {
     flex-direction: column;
 }
 
+.taskInput, .currentTask {
+    flex: 1;
+}
+
+.taskInput {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.taskInput * {
+    margin: 16px;
+}
+
+label {
+    font-size: 2rem;
+}
+
+[type="text"] {
+    background-color: #F5F5F5;
+    border-style: none;
+    border: 1px solid;
+    width: 50%;
+    height: 32px;
+    text-align: center;
+    font-size: 1rem;
+}
+
+[type="submit"] {
+    background-color: #ED6561;
+    border-style: none;
+    border: 1px solid;
+    border-radius: 5%;
+    padding: 8px 16px;
+    width: fit-content;
+}
+
 footer {
     justify-content: space-between;
 }
@@ -71,107 +109,3 @@ img {
     color: #ED6561;
     margin: 0 16px;
 }
-
-/* html, body {
-    height: 100vh;
-    width: 100vw;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    background-color: #BDB2FF;
-    display: flex;
-    flex-direction: column;
-}
-
-header, footer {
-    flex: 1 0 10%;
-    background-color: #CA7ADC;
-}
-
-.content {
-    flex: 8 0 80%;
-    height: 100vh;
-    
-}
-
-.taskSidebar {
-    flex: 1 0 13%;
-    background-color: #ffc1d8;
-}
-
-.container {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    flex: 3 0 87%;
-}
-
-h1 {
-    font-family: 'Pacifico', cursive;
-    text-align: center;
-    font-size: 3rem;
-    flex: 1;
-}
-
-.input,
-.taskDiv, button, #submitButton, p {
-    font-family: 'Nunito Sans', sans-serif;
-}
-
-.input {
-    display: flex;
-    align-items: center;
-    flex: 0;
-    text-align: center;
-    width: 75%;
-}
-
-label,
-input {
-    margin: 16px;
-}
-
-label,
-p {
-    font-size: 2rem;
-}
-
-#task {
-    background-color: #F5F5F5;
-    border-style: none;
-    border: 1px solid;
-    width: 50%;
-    height: 32px;
-    text-align: center;
-    font-size: 1rem;
-    flex: 3;
-}
-
-.taskDiv {
-    flex: 3;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.taskSidebar > p {
-    text-align: center;
-}
-
-.tasks {
-    font-weight: bold;
-}
-
-button,
-#submitButton {
-    background-color: #A6D8F6;
-    border-style: none;
-    border: 1px solid;
-    border-radius: 5%;
-    padding: 8px 16px;
-    width: fit-content;
-} */
