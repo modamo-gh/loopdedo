@@ -27,7 +27,7 @@ h1 {
     height: fit-content;
 }
 
-h1, footer p {
+h1 {
     transform: translateX(-50%);
     position: relative;
     left: 10%;
@@ -115,8 +115,12 @@ footer {
     justify-content: space-between;
 }
 
-p {
-    margin: 0;
+footer p {
+    margin-left: 32px;
+}
+
+a {
+    text-decoration: none;
 }
 
 img {
