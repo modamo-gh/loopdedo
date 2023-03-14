@@ -14,19 +14,41 @@ header, footer {
     background-color: #CA7ADC;
 }
 
+header {
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+h1 {
+    font-family: 'Pacifico', cursive;
+    font-size: 2rem;
+    margin: 0;
+    height: fit-content;
+    transform: translateX(-50%);
+    position: relative;
+    left: 10%;
+}
+
 .content {
     flex: 8;
-    background-color: #BDB2FF;
     display: flex;
 }
 
-/* .sidebar {
+.sidebar {
     flex: 1;
+    background-color: #A659B9;
+}
+
+h2 {
+    text-align: center;
+    font-family: 'Nunito Sans', sans-serif;
 }
 
 .mainContent {
     flex: 4;
-} */
+    background-color: #BDB2FF;
+}
 
 /* html, body {
     height: 100vh;
@@ -49,6 +71,7 @@ header, footer {
 .content {
     flex: 8 0 80%;
     height: 100vh;
+    
 }
 
 .taskSidebar {
