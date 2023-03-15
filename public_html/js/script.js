@@ -32,7 +32,7 @@ submitButton.addEventListener("click", () => {
     tasks.push(taskInput.value);
     localStorage.setItem("tasks", JSON.stringify(tasks));
 
-    if(tasks.length === 1){
+    if(tasks.length){
         textNode.textContent = tasks[currentTaskIndex];
         currentTaskDiv.appendChild(nextButton);
     }
