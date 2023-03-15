@@ -30,6 +30,7 @@ const currentTaskDiv = document.querySelector(".currentTask");
 
 submitButton.addEventListener("click", () => {
     tasks.push(taskInput.value);
+    currentTaskIndex = tasks.length - 1;
     localStorage.setItem("tasks", JSON.stringify(tasks));
 
     if(tasks.length){
@@ -42,6 +43,8 @@ submitButton.addEventListener("click", () => {
     const sidebar = document.querySelector(".sidebar");
 
     sidebar.appendChild(taskP);
+
+    highlightCurrentTask();
 })
 
 currentTaskDiv.appendChild(currentTask);
@@ -49,6 +52,8 @@ currentTaskDiv.appendChild(currentTask);
 nextButton.addEventListener("click", () => {
     currentTaskIndex = (currentTaskIndex + 1) % tasks.length;
     textNode.textContent = tasks[currentTaskIndex];
+
+    highlightCurrentTask();
 });
 
 function createTask(taskString) {
@@ -56,4 +61,19 @@ function createTask(taskString) {
     taskP.textContent = taskString;
 
     return taskP;
+}
+
+const highlightCurrentTask = () => {
+    let previousTask;
+    if(currentTaskIndex + 1 === 1){
+        previousTask = document.querySelector(`.sidebar p:nth-child(${tasks.length + 1})`);
+
+    }
+    else {
+        previousTask = document.querySelector(`.sidebar p:nth-child(${currentTaskIndex + 1})`);
+    }
+    const highlight = document.querySelector(`.sidebar p:nth-child(${currentTaskIndex + 2})`);
+    
+    previousTask.classList.remove("highlight");
+    highlight.classList.add("highlight");
 }

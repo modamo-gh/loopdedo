@@ -127,3 +127,8 @@ img {
     height: 32px;
     margin: 0 16px;
 }
+
+.highlight{
+    background-color: #ED6561;
+    margin: 0;
+}
