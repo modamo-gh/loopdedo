@@ -7,7 +7,7 @@ if(!localStorage.getItem("taskList")){
     };
 }
 else {
-    taskList = tasks = JSON.parse(localStorage.getItem("taskList"));
+    taskList = JSON.parse(localStorage.getItem("taskList"));
 }
 
 const sidebar = document.querySelector(".sidebar");
@@ -19,7 +19,8 @@ taskList.tasks.forEach(task => {
 
 const highlightCurrentTask = () => {
     let previousTask;
-    if(taskList.currentTaskIndex + 1 === 1){
+
+    if(taskList.currentTaskIndex === 0){
         previousTask = document.querySelector(`.sidebar p:nth-child(${taskList.tasks.length + 1})`);
     }
     else {
@@ -74,6 +75,7 @@ currentTaskDiv.appendChild(currentTask);
 
 nextButton.addEventListener("click", () => {
     taskList.currentTaskIndex = (taskList.currentTaskIndex + 1) % taskList.tasks.length;
+    localStorage.setItem("taskList", JSON.stringify(taskList));
     textNode.textContent = taskList.tasks[taskList.currentTaskIndex];
 
     highlightCurrentTask();
