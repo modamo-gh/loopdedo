@@ -1,4 +1,8 @@
 let taskList;
+const textNode = document.createTextNode("");
+const currentTaskDiv = document.querySelector(".currentTask");
+const nextButton = document.createElement("button");
+
 
 if(!localStorage.getItem("taskList")){
     taskList = {
@@ -16,6 +20,11 @@ taskList.tasks.forEach(task => {
     const taskP = createTask(task);
     sidebar.appendChild(taskP);
 });
+
+if(taskList.tasks.length){
+    textNode.textContent = taskList.tasks[taskList.currentTaskIndex];
+    currentTaskDiv.appendChild(nextButton);
+}
 
 const highlightCurrentTask = () => {
     let previousTask;
@@ -44,31 +53,18 @@ const submitButton = document.querySelector("[type=\"submit\"]");
 const taskInput = document.querySelector("[type=\"text\"]");
 
 const currentTask = document.createElement("p");
-let textNode = document.createTextNode("");
 currentTask.appendChild(textNode);
 
-const nextButton = document.createElement("button");
 nextButton.textContent = "NEXT";
-
-const currentTaskDiv = document.querySelector(".currentTask");
 
 submitButton.addEventListener("click", () => {
     taskList.tasks.push(taskInput.value);
-    taskList.currentTaskIndex = taskList.tasks.length - 1;
-    localStorage.setItem("taskList", JSON.stringify(taskList));
-
-    if(taskList.tasks.length){
-        textNode.textContent = taskList.tasks[taskList.currentTaskIndex];
-        currentTaskDiv.appendChild(nextButton);
-    }
 
     const taskP = createTask(taskInput.value);
 
     const sidebar = document.querySelector(".sidebar");
 
     sidebar.appendChild(taskP);
-
-    highlightCurrentTask();
 })
 
 currentTaskDiv.appendChild(currentTask);
