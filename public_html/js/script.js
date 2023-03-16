@@ -17,6 +17,28 @@ taskList.tasks.forEach(task => {
     sidebar.appendChild(taskP);
 });
 
+const highlightCurrentTask = () => {
+    let previousTask;
+    if(taskList.currentTaskIndex + 1 === 1){
+        previousTask = document.querySelector(`.sidebar p:nth-child(${taskList.tasks.length + 1})`);
+    }
+    else {
+        previousTask = document.querySelector(`.sidebar p:nth-child(${taskList.currentTaskIndex + 1})`);
+    }
+   
+    const highlight = document.querySelector(`.sidebar p:nth-child(${taskList.currentTaskIndex + 2})`);
+    
+    if(previousTask){
+        previousTask.classList.remove("highlight");
+    }
+
+    if(highlight){
+        highlight.classList.add("highlight");
+    }
+}
+
+highlightCurrentTask();
+
 const submitButton = document.querySelector("[type=\"submit\"]");
 const taskInput = document.querySelector("[type=\"text\"]");
 
@@ -31,11 +53,11 @@ const currentTaskDiv = document.querySelector(".currentTask");
 
 submitButton.addEventListener("click", () => {
     taskList.tasks.push(taskInput.value);
-    taskList.currentTaskindex = taskList.tasks.length - 1;
+    taskList.currentTaskIndex = taskList.tasks.length - 1;
     localStorage.setItem("taskList", JSON.stringify(taskList));
 
     if(taskList.tasks.length){
-        textNode.textContent = taskList.tasks[taskList.currentTaskindex];
+        textNode.textContent = taskList.tasks[taskList.currentTaskIndex];
         currentTaskDiv.appendChild(nextButton);
     }
 
@@ -51,8 +73,8 @@ submitButton.addEventListener("click", () => {
 currentTaskDiv.appendChild(currentTask);
 
 nextButton.addEventListener("click", () => {
-    taskList.currentTaskindex = (taskList.currentTaskindex + 1) % taskList.tasks.length;
-    textNode.textContent = taskList.tasks[taskList.currentTaskindex];
+    taskList.currentTaskIndex = (taskList.currentTaskIndex + 1) % taskList.tasks.length;
+    textNode.textContent = taskList.tasks[taskList.currentTaskIndex];
 
     highlightCurrentTask();
 });
@@ -64,17 +86,3 @@ function createTask(taskString) {
     return taskP;
 }
 
-const highlightCurrentTask = () => {
-    let previousTask;
-    if(taskList.currentTaskindex + 1 === 1){
-        previousTask = document.querySelector(`.sidebar p:nth-child(${taskList.tasks.length + 1})`);
-
-    }
-    else {
-        previousTask = document.querySelector(`.sidebar p:nth-child(${taskList.currentTaskindex + 1})`);
-    }
-    const highlight = document.querySelector(`.sidebar p:nth-child(${taskList.currentTaskindex + 2})`);
-    
-    previousTask.classList.remove("highlight");
-    highlight.classList.add("highlight");
-}
