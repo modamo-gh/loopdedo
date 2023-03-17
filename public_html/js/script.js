@@ -54,7 +54,7 @@ const taskInput = document.querySelector("[type=\"text\"]");
 
 nextButton.textContent = "NEXT";
 
-submitButton.addEventListener("click", () => {
+const addTask = () => {
     taskList.tasks.push(taskInput.value);
     localStorage.setItem("taskList", JSON.stringify(taskList));
 
@@ -71,7 +71,14 @@ submitButton.addEventListener("click", () => {
     currentTaskDiv.appendChild(nextButton);
     highlightCurrentTask();
     }
-})
+};
+
+submitButton.addEventListener("click", addTask);
+taskInput.addEventListener("keyup", event => {
+    if(event.key === "Enter"){
+        addTask();
+    }
+});
 
 nextButton.addEventListener("click", () => {
     taskList.currentTaskIndex = (taskList.currentTaskIndex + 1) % taskList.tasks.length;
