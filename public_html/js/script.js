@@ -6,10 +6,7 @@ const currentTask = document.createElement("p");
 
 if(!localStorage.getItem("taskList")){
     console.log("here");
-    taskList = {
-        currentTaskIndex: 0,
-        tasks: []
-    };
+    taskList = new List("main", 0, []);
 }
 else {
     taskList = JSON.parse(localStorage.getItem("taskList"));
