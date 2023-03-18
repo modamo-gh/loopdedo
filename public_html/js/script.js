@@ -1,8 +1,14 @@
 let taskList;
 const textNode = document.createTextNode("");
 const currentTaskDiv = document.querySelector(".currentTask");
+const buttons = document.createElement("div");
 const nextButton = document.createElement("button");
+const deleteButton = document.createElement("button");
 const currentTask = document.createElement("p");
+
+buttons.classList.add("buttons");
+buttons.appendChild(deleteButton);
+buttons.appendChild(nextButton);
 
 if(!localStorage.getItem("taskList")){
     console.log("here");
@@ -23,7 +29,7 @@ if(taskList.tasks.length){
     textNode.textContent = taskList.tasks[taskList.currentTaskIndex];
     currentTask.appendChild(textNode);
     currentTaskDiv.appendChild(currentTask);    
-    currentTaskDiv.appendChild(nextButton);
+    currentTaskDiv.appendChild(buttons);
 }
 
 const highlightCurrentTask = () => {
@@ -52,6 +58,7 @@ highlightCurrentTask();
 const submitButton = document.querySelector("[type=\"submit\"]");
 const taskInput = document.querySelector("[type=\"text\"]");
 
+deleteButton.textContent = "DELETE";
 nextButton.textContent = "NEXT";
 
 const addTask = () => {
@@ -68,7 +75,7 @@ const addTask = () => {
         textNode.textContent = taskInput.value;
     currentTask.appendChild(textNode);
     currentTaskDiv.appendChild(currentTask);    
-    currentTaskDiv.appendChild(nextButton);
+    currentTaskDiv.appendChild(buttons);
     highlightCurrentTask();
     }
 };

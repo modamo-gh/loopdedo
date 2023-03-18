@@ -99,7 +99,6 @@ label {
 
 [type="submit"],
 button {
-    background-color: #ED6561;
     border-style: none;
     border: 1px solid;
     border-radius: 5%;
@@ -107,8 +106,17 @@ button {
     width: fit-content;
 }
 
+[type="submit"],
+.buttons button:last-child {
+    background-color: #ED6561;
+}
+
 .currentTask p {
     font-size: 2rem;
+}
+
+.buttons button:first-child {
+    background-color: #5EE8ED;
 }
 
 footer {
