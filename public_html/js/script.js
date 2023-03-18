@@ -87,6 +87,13 @@ taskInput.addEventListener("keyup", event => {
     }
 });
 
+deleteButton.addEventListener("click", () => {
+    const task = document.querySelector(`.sidebar p:nth-child(${taskList.currentTaskIndex + 2})`);
+    taskList.tasks.splice(taskList.tasks.currentTaskIndex, 1);
+    sidebar.removeChild(task);
+    localStorage.setItem("taskList", JSON.stringify(taskList));
+})
+
 nextButton.addEventListener("click", () => {
     taskList.currentTaskIndex = (taskList.currentTaskIndex + 1) % taskList.tasks.length;
     localStorage.setItem("taskList", JSON.stringify(taskList));
