@@ -89,6 +89,7 @@ taskInput.addEventListener("keyup", event => {
 
 deleteButton.addEventListener("click", () => {
     const task = document.querySelector(`.sidebar p:nth-child(${taskList.currentTaskIndex + 2})`);
+    textNode.textContent = taskList.tasks[taskList.currentTaskIndex + 1];
     taskList.tasks.splice(taskList.tasks.currentTaskIndex, 1);
     sidebar.removeChild(task);
     localStorage.setItem("taskList", JSON.stringify(taskList));
