@@ -11,7 +11,6 @@ buttons.appendChild(deleteButton);
 buttons.appendChild(nextButton);
 
 if(!localStorage.getItem("taskList")){
-    console.log("here");
     taskList = new List("main", 0, []);
 }
 else {
@@ -62,6 +61,10 @@ deleteButton.textContent = "DELETE";
 nextButton.textContent = "NEXT";
 
 const addTask = () => {
+    if(taskInput.value.trim() === ""){
+        return;
+    }
+
     taskList.tasks.push(taskInput.value);
     localStorage.setItem("taskList", JSON.stringify(taskList));
 
