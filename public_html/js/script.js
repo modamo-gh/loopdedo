@@ -32,23 +32,14 @@ if(taskList.tasks.length){
 }
 
 const highlightCurrentTask = () => {
-    let previousTask;
-
-    if(taskList.currentTaskIndex === 0){
-        previousTask = document.querySelector(`.sidebar p:nth-child(${taskList.tasks.length + 1})`);
-    }
-    else {
-        previousTask = document.querySelector(`.sidebar p:nth-child(${taskList.currentTaskIndex + 1})`);
-    }
-   
-    const highlight = document.querySelector(`.sidebar p:nth-child(${taskList.currentTaskIndex + 2})`);
-    
-    if(previousTask){
-        previousTask.classList.remove("highlight");
+    const currentHighlightedTask = document.querySelector(".highlight");
+    if(currentHighlightedTask){
+        currentHighlightedTask.classList.remove("highlight");
     }
 
-    if(highlight){
-        highlight.classList.add("highlight");
+    const taskToHighlight = document.querySelector(`.sidebar p:nth-child(${taskList.currentTaskIndex + 2})`);
+    if(taskToHighlight){
+        taskToHighlight.classList.add("highlight");
     }
 }
 
