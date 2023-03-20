@@ -80,10 +80,15 @@ const addTask = () => {
     }
 };
 
-submitButton.addEventListener("click", addTask);
+submitButton.addEventListener("click", () => {
+    addTask();
+    taskInput.value = "";
+    taskInput.focus();
+});
 taskInput.addEventListener("keyup", event => {
     if(event.key === "Enter"){
         addTask();
+        taskInput.value = "";
     }
 });
 
