@@ -1,40 +1,14 @@
-let taskList;
-const textNode = document.createTextNode("");
-const currentTaskDiv = document.querySelector(".currentTask");
-const buttons = document.createElement("div");
-const nextButton = document.createElement("button");
-const deleteButton = document.createElement("button");
-const currentTask = document.createElement("p");
+const createTask = (taskString) => {
+    const taskP = document.createElement("p");
+    taskP.textContent = taskString;
 
-buttons.classList.add("buttons");
-buttons.appendChild(deleteButton);
-buttons.appendChild(nextButton);
-
-if(!localStorage.getItem("taskList")){
-    taskList = new List("main", 0, []);
-}
-else {
-    taskList = JSON.parse(localStorage.getItem("taskList"));
-}
-
-const sidebar = document.querySelector(".sidebar");
-
-taskList.tasks.forEach(task => {
-    const taskP = createTask(task);
-    sidebar.appendChild(taskP);
-});
-
-if(taskList.tasks.length){
-    textNode.textContent = taskList.tasks[taskList.currentTaskIndex];
-    currentTask.appendChild(textNode);
-    currentTaskDiv.appendChild(currentTask);    
-    currentTaskDiv.appendChild(buttons);
-}
+    return taskP;
+};
 
 const highlightCurrentTask = () => {
-    const currentHighlightedTask = document.querySelector(".highlight");
-    if(currentHighlightedTask){
-        currentHighlightedTask.classList.remove("highlight");
+    const currentlyHighlightedTask = document.querySelector(".highlight");
+    if(currentlyHighlightedTask){
+        currentlyHighlightedTask.classList.remove("highlight");
     }
 
     const taskToHighlight = document.querySelector(`.sidebar p:nth-child(${taskList.currentTaskIndex + 2})`);
@@ -43,13 +17,57 @@ const highlightCurrentTask = () => {
     }
 }
 
-highlightCurrentTask();
+const populateCurrentTaskDiv = (task) => {
+    textNode.textContent = task;
+    currentTask.appendChild(textNode);
+    currentTaskDiv.appendChild(currentTask);    
+    currentTaskDiv.appendChild(buttons);
+}
+
+const populateSidebar = () => {
+    taskList.tasks.forEach(task => {
+        const taskP = createTask(task);
+        sidebar.appendChild(taskP);
+    });
+}
+
+const retrieveTasks = () => {
+    if(!localStorage.getItem("taskList")){
+        return new List("tasks", 0, []);
+    }
+    else {
+        return JSON.parse(localStorage.getItem("taskList"));
+    }    
+}
+
+const taskList = retrieveTasks();
+const sidebar = document.querySelector(".sidebar");
+
+populateSidebar();
+
+const currentTaskDiv = document.querySelector(".currentTask");
+const currentTask = document.createElement("p");
+const textNode = document.createTextNode("");
+
+const buttons = document.createElement("div");
+
+const deleteButton = document.createElement("button");
+deleteButton.textContent = "DELETE";
+
+const nextButton = document.createElement("button");
+nextButton.textContent = "NEXT";
+
+buttons.classList.add("buttons");
+buttons.appendChild(deleteButton);
+buttons.appendChild(nextButton);
+
+if(taskList.tasks.length){
+    populateCurrentTaskDiv(taskList.tasks[taskList.currentTaskIndex]);
+    highlightCurrentTask();
+}
 
 const submitButton = document.querySelector("[type=\"submit\"]");
 const taskInput = document.querySelector("[type=\"text\"]");
-
-deleteButton.textContent = "DELETE";
-nextButton.textContent = "NEXT";
 
 const addTask = () => {
     if(taskInput.value.trim() === ""){
@@ -66,11 +84,8 @@ const addTask = () => {
     sidebar.appendChild(taskP);
 
     if(taskList.tasks.length === 1){
-        textNode.textContent = taskInput.value;
-    currentTask.appendChild(textNode);
-    currentTaskDiv.appendChild(currentTask);    
-    currentTaskDiv.appendChild(buttons);
-    highlightCurrentTask();
+        populateCurrentTaskDiv(taskInput.value);
+        highlightCurrentTask();
     }
 };
 
@@ -79,6 +94,7 @@ submitButton.addEventListener("click", () => {
     taskInput.value = "";
     taskInput.focus();
 });
+
 taskInput.addEventListener("keyup", event => {
     if(event.key === "Enter"){
         addTask();
@@ -101,11 +117,3 @@ nextButton.addEventListener("click", () => {
 
     highlightCurrentTask();
 });
-
-function createTask(taskString) {
-    const taskP = document.createElement("p");
-    taskP.textContent = taskString;
-
-    return taskP;
-}
-
