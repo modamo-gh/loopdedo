@@ -104,10 +104,24 @@ taskInput.addEventListener("keyup", event => {
 
 deleteButton.addEventListener("click", () => {
     const task = document.querySelector(`.sidebar p:nth-child(${taskList.currentTaskIndex + 2})`);
-    textNode.textContent = taskList.tasks[taskList.currentTaskIndex + 1];
-    taskList.tasks.splice(taskList.tasks.currentTaskIndex, 1);
-    sidebar.removeChild(task);
+    textNode.textContent = taskList.tasks[(taskList.currentTaskIndex + 1) % taskList.tasks.length];
+    taskList.tasks.splice(taskList.currentTaskIndex, 1);
     localStorage.setItem("taskList", JSON.stringify(taskList));
+
+    const currentlyHighlightedTask = document.querySelector(".highlight");
+    if(currentlyHighlightedTask){
+        currentlyHighlightedTask.classList.remove("highlight");
+    }
+
+    sidebar.removeChild(task);
+
+    if(taskList.currentTaskIndex === taskList.tasks.length){
+        taskList.currentTaskIndex = 0;
+    }
+    const taskToHighlight = document.querySelector(`.sidebar p:nth-child(${taskList.currentTaskIndex + 2})`);
+    if(taskToHighlight){
+        taskToHighlight.classList.add("highlight");
+    }
 })
 
 nextButton.addEventListener("click", () => {
