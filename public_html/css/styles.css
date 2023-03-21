@@ -1,142 +1,146 @@
-html, body {
-    height: 100vh;
-    margin: 0;
-    padding: 0;
+html,
+body {
+	height: 100vh;
+	margin: 0;
+	padding: 0;
 }
 
 body {
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
-header, footer {
-    display: flex;
-    flex: 1;
-    align-items: center;
-    background-color: #CA7ADC;
+header,
+footer {
+	display: flex;
+	flex: 1;
+	align-items: center;
+	background-color: #ca7adc;
 }
 
-header, footer {
-    text-align: center;
-}
-
-h1 {
-    font-family: 'Pacifico', cursive;
-    font-size: 2rem;
-    margin: 0;
-    height: fit-content;
+header,
+footer {
+	text-align: center;
 }
 
 h1 {
-    transform: translateX(-50%);
-    position: relative;
-    left: 10%;
+	font-family: "Pacifico", cursive;
+	font-size: 2rem;
+	margin: 0;
+	height: fit-content;
 }
 
-.content {
-    flex: 8;
-    display: flex;
+h1 {
+	transform: translateX(-50%);
+	position: relative;
+	left: 10%;
 }
 
-.content, footer {
-    font-family: 'Nunito Sans', sans-serif;
+.main {
+	flex: 8;
+	display: flex;
+}
+
+.main,
+footer {
+	font-family: "Nunito Sans", sans-serif;
 }
 
 .sidebar {
-    flex: 1;
-    background-color: #A659B9;
+	flex: 1;
+	background-color: #a659b9;
 }
 
 h2,
 .sidebar p {
-    text-align: center;
+	text-align: center;
 }
 
 h2 {
-    background-color: #843997;
-    margin: 0;
-    padding: 16px;
+	background-color: #843997;
+	margin: 0;
+	padding: 16px;
 }
 
 .sidebar p {
-    margin: 8px;
+	margin: 8px;
 }
 
 .mainContent {
-    flex: 4;
-    background-color: #BDB2FF;
-    display: flex;
-    flex-direction: column;
+	flex: 4;
+	background-color: #bdb2ff;
+	display: flex;
+	flex-direction: column;
 }
 
 .taskInput,
 .currentTask {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
 .taskInput *,
 .currentTask * {
-    margin: 16px;
+	margin: 16px;
 }
 
 label {
-    font-size: 2rem;
+	font-size: 2rem;
 }
 
 [type="text"] {
-    background-color: #F5F5F5;
-    border-style: none;
-    border: 1px solid;
-    width: 50%;
-    height: 32px;
-    text-align: center;
-    font-size: 1rem;
+	background-color: #f5f5f5;
+	border-style: none;
+	border: 1px solid;
+	width: 50%;
+	height: 32px;
+	text-align: center;
+	font-size: 1rem;
 }
 
 [type="submit"],
 button {
-    border-style: none;
-    border: 1px solid;
-    border-radius: 5%;
-    padding: 8px 16px;
-    width: fit-content;
+	border-style: none;
+	border: 1px solid;
+	border-radius: 5%;
+	padding: 8px 16px;
+	width: fit-content;
 }
 
 [type="submit"],
 .buttons button:last-child {
-    background-color: #ED6561;
+	background-color: #ed6561;
 }
 
 .currentTask p {
-    font-size: 2rem;
+	font-size: 2rem;
 }
 
 .buttons button:first-child {
-    background-color: #5EE8ED;
+	background-color: #5ee8ed;
 }
 
 footer {
-    justify-content: space-between;
+	justify-content: space-between;
 }
 
 footer p {
-    margin-left: 32px;
+	margin-left: 32px;
 }
 
 a {
-    text-decoration: none;
+	text-decoration: none;
 }
 
 img {
-    height: 32px;
-    margin: 0 16px;
+	height: 32px;
+	margin: 0 16px;
 }
 
-.highlight{
-    background-color: #ED6561;
-    margin: 0;
+.highlight {
+	background-color: #ed6561;
+	margin: 0;
 }
