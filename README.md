@@ -7,7 +7,7 @@ loopdedo is a task management app that allows a user to cycle through tasks. In 
 
 ## Demo
 
-https://youtu.be/Q6LwdhZUHMU
+https://user-images.githubusercontent.com/98200966/226656983-25223a83-f5ac-4b58-979e-d2a1f2312039.mp4
 
 ## In the pipeline
 
