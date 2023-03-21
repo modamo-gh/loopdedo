@@ -24,6 +24,7 @@ const populateCurrentTaskDiv = (task) => {
 	currentTask.appendChild(textNode);
 	currentTaskDiv.appendChild(currentTask);
 	currentTaskDiv.appendChild(buttons);
+	buttons.hidden = false;
 };
 
 const populateSidebar = () => {
@@ -107,8 +108,16 @@ deleteButton.addEventListener("click", () => {
 	const task = document.querySelector(
 		`.sidebar p:nth-child(${taskList.currentTaskIndex + 2})`
 	);
-	textNode.textContent =
+
+	if(taskList.tasks.length > 1){
+		textNode.textContent =
 		taskList.tasks[(taskList.currentTaskIndex + 1) % taskList.tasks.length];
+	}
+	else{
+		textNode.textContent = "";
+		buttons.hidden = true;
+	}
+	
 	taskList.tasks.splice(taskList.currentTaskIndex, 1);
 	localStorage.setItem("taskList", JSON.stringify(taskList));
 
