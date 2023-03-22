@@ -19,11 +19,38 @@
 				<h2>Tasks</h2>
 			</div>
 			<div class="mainContent">
-				<div class="taskInput">
-					<label for="task">Task:</label>
-					<input type="text" class="text" />
-					<input type="submit" value="Submit" class="submitButton" />
+				<div class="formContainer">
+					<form>
+						<fieldset>
+							<label for="currentTask">Current List:</label>
+							<select name="currentList">
+								<option value="default" selected>Select list</option>
+							</select>
+						</fieldset>
+	
+						<fieldset>
+							<label for="new">Add New:</label>
+							<select name="new">
+								<option value="default" selected>List or Task</option>
+								<option value="list">List</option>
+								<option value="task">Task</option>
+							</select>
+						</fieldset>
+	
+						<fieldset>
+							<label for="list">List Name:</label>
+							<input type="text" class="text" />
+						</fieldset>
+	
+						<fieldset>
+							<label for="task">Task:</label>
+							<input type="text" class="text" />
+						</fieldset>
+	
+						<input type="submit" value="Submit" class="submitButton" />
+					</form>
 				</div>
+				
 				<div class="currentTask"></div>
 			</div>
 		</div>

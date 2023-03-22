@@ -73,13 +73,33 @@ h2 {
 	flex-direction: column;
 }
 
-.taskInput,
-.currentTask {
+.formContainer,
+.currentTask,
+form {
 	display: flex;
 	flex: 1;
 	flex-direction: column;
 	justify-content: center;
+}
+
+.formContainer,
+.currentTask {
 	align-items: center;
+}
+
+form {
+	width: 50%;
+}
+
+fieldset {
+	display: flex;
+	border: none;
+	align-items: center;
+	padding: 12px;
+}
+
+select {
+	height: 2rem;
 }
 
 .taskInput *,
@@ -89,6 +109,7 @@ h2 {
 
 label {
 	font-size: 2rem;
+	width: 175px;
 }
 
 [type="text"] {
@@ -115,6 +136,9 @@ button {
 	background-color: #ed6561;
 }
 
+[type="submit"] {
+	align-self: center;
+}
 .currentTask p {
 	font-size: 2rem;
 }
