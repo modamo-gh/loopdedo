@@ -1,7 +1,16 @@
 class Task {
-    constructor(value){
-        this.id = 0;
+    constructor(id, value){
+        this.id = id;
         this.value = value;
+    }
+
+    createPElement(){
+        const p = document.createElement("p");
+        p.classList.add("task");
+        p.dataset.id = this.id;
+        p.textContent = this.value;
+
+        return p;
     }
 
     getID(){
