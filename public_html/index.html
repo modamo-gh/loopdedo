@@ -22,15 +22,17 @@
 				<div class="formContainer">
 					<form>
 						<fieldset>
-							<label for="currentTask">Current List:</label>
-							<select name="currentList">
-								<option value="default" selected>Select list</option>
+							<label for="currentList">Current List:</label>
+							<select id="currentList">
+								<option value="select" selected>Select list</option>
+								<option value="create">Create new list</option>
+								<option value="default">Default</option>
 							</select>
 						</fieldset>
 	
 						<fieldset>
 							<label for="new">Add New:</label>
-							<select name="new">
+							<select id="new">
 								<option value="default" selected>List or Task</option>
 								<option value="list">List</option>
 								<option value="task">Task</option>
@@ -39,15 +41,15 @@
 	
 						<fieldset>
 							<label for="list">List Name:</label>
-							<input type="text" class="text" />
+							<input type="text" class="text" id="list"/>
 						</fieldset>
 	
 						<fieldset>
 							<label for="task">Task:</label>
-							<input type="text" class="text" />
+							<input type="text" class="text" id="task"/>
 						</fieldset>
 	
-						<input type="submit" value="Submit" class="submitButton" />
+						<input type="button" value="Submit" class="submitButton" />
 					</form>
 				</div>
 				
@@ -75,5 +77,6 @@
 		</footer>
 		<script src="js/list.js"></script>
 		<script src="js/script.js"></script>
+		<script src="js/task.js"></script>
 	</body>
 </html>

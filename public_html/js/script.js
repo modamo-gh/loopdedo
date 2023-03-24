@@ -29,14 +29,13 @@ const populateCurrentTaskDiv = (task) => {
 
 const populateSidebar = () => {
 	taskList.tasks.forEach((task) => {
-		const taskP = createTask(task);
-		sidebar.appendChild(taskP);
+		// sidebar.append(task.createPElement());
 	});
 };
 
 const retrieveTasks = () => {
 	if (!localStorage.getItem("taskList")) {
-		return new List("tasks", 0, []);
+		return new List("default", 0, []);
 	} else {
 		return JSON.parse(localStorage.getItem("taskList"));
 	}
@@ -67,23 +66,27 @@ if (taskList.tasks.length) {
 	populateCurrentTaskDiv(taskList.tasks[taskList.currentTaskIndex]);
 	highlightCurrentTask();
 }
+const newSelect = document.querySelector("#new");
+const listInput = document.querySelector("#list");
+const taskInput = document.querySelector("#task");
 
-const submitButton = document.querySelector('[type="submit"]');
-const taskInput = document.querySelector('[type="text"]');
+
+
+const submitButton = document.querySelector(".submitButton");
+
 
 const addTask = () => {
 	if (taskInput.value.trim() === "") {
 		return;
 	}
 
-	taskList.tasks.push(taskInput.value);
+	const newTask = new Task(taskList.tasks.length + 1, taskInput.value);
+	taskList.tasks.push(newTask);
 	localStorage.setItem("taskList", JSON.stringify(taskList));
-
-	const taskP = createTask(taskInput.value);
 
 	const sidebar = document.querySelector(".sidebar");
 
-	sidebar.appendChild(taskP);
+	sidebar.appendChild(newTask.createPElement());
 
 	if (taskList.tasks.length === 1) {
 		populateCurrentTaskDiv(taskInput.value);
@@ -91,16 +94,27 @@ const addTask = () => {
 	}
 };
 
-submitButton.addEventListener("click", () => {
-	addTask();
-	taskInput.value = "";
-	taskInput.focus();
+newSelect.addEventListener("click", () => {
+	if(newSelect.value === "list"){
+		listInput.disabled = false;
+		taskInput.disabled = true;
+	}
+	else if(newSelect.value === "task"){
+		listInput.disabled = true;
+		taskInput.disabled = false;
+	}
 });
 
 taskInput.addEventListener("keyup", (event) => {
 	if (event.key === "Enter") {
 		addTask();
-		taskInput.value = "";
+	}
+});
+
+submitButton.addEventListener("click", () => {
+	const newSelect = document.querySelector("#new");
+	if(newSelect.value === "task"){
+		addTask();
 	}
 });
 
