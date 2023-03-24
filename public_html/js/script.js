@@ -1,5 +1,12 @@
 import { Task } from "./task.js";
 
+const addNewListOption = (list) => {
+	const listOption = document.createElement("option");
+	listOption.value = list;
+	listOption.textContent = list;
+	currentListSelect.appendChild(listOption);
+}
+
 const highlightCurrentTask = () => {
 	const currentlyHighlightedTask = document.querySelector(".highlight");
 	if (currentlyHighlightedTask) {
@@ -22,6 +29,11 @@ const populateCurrentTaskDiv = (task) => {
 	buttons.hidden = false;
 };
 
+const populateCurrentListSelect = () => {
+	lists.forEach(list => {
+		addNewListOption(list);
+	});
+}
 const populateSidebar = () => {
 	taskList.tasks.forEach((task) => {
 		const sameTask = new Task(task.id, task.value);
@@ -29,17 +41,41 @@ const populateSidebar = () => {
 	});
 };
 
-const retrieveTasks = () => {
-	if (!localStorage.getItem("taskList")) {
-		return new List("default", 0, []);
+const retrieveLists = () => {
+	if (!localStorage.getItem("lists")) {
+		const lists = [];
+		console.log(lists);
+		localStorage.setItem("lists", JSON.stringify(lists));
+
+		return lists;
 	} else {
-		return JSON.parse(localStorage.getItem("taskList"));
+		return JSON.parse(localStorage.getItem("lists"));
 	}
 };
+
+const retrieveTasks = () => {
+	if (!localStorage.getItem("taskList")) {
+		const newList = new List("Default", 0, []);
+		
+		localStorage.setItem("taskList", JSON.stringify(newList));
+		lists.push(newList.name);
+		localStorage.setItem("lists", JSON.stringify(lists));
+
+		return newList;
+	} else {
+		return JSON.parse(localStorage.getItem("taskList"));
+		
+	}
+};
+
+const lists = retrieveLists();
+
+const currentListSelect = document.querySelector("#currentList");
 
 const taskList = retrieveTasks();
 const sidebar = document.querySelector(".sidebar");
 
+populateCurrentListSelect();
 populateSidebar();
 
 const currentTaskDiv = document.querySelector(".currentTask");
@@ -112,7 +148,10 @@ submitButton.addEventListener("click", () => {
 	else if(newSelect.value === "list"){
 		const newList = new List(listInput.value, 0, []);
 		taskList.tasks.push(newList);
-		localStorage.setItem("taskList", taskList);
+		localStorage.setItem("taskList", JSON.stringify(taskList));
+		lists.push(newList.name);
+		localStorage.setItem("lists", JSON.stringify(lists));
+		addNewListOption(newList.name);
 	}
 });
 
