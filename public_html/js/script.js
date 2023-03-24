@@ -59,7 +59,7 @@ buttons.appendChild(deleteButton);
 buttons.appendChild(nextButton);
 
 if (taskList.tasks.length) {
-	populateCurrentTaskDiv(taskList.tasks[taskList.currentTaskIndex]);
+	populateCurrentTaskDiv(taskList.tasks[taskList.currentTaskIndex].value);
 	highlightCurrentTask();
 }
 const newSelect = document.querySelector("#new");
@@ -120,7 +120,7 @@ deleteButton.addEventListener("click", () => {
 		textNode.textContent =
 			taskList.tasks[
 				(taskList.currentTaskIndex + 1) % taskList.tasks.length
-			];
+			].value;
 	} else {
 		textNode.textContent = "";
 		buttons.hidden = true;
