@@ -1,9 +1,4 @@
-const createTask = (taskString) => {
-	const taskP = document.createElement("p");
-	taskP.textContent = taskString;
-
-	return taskP;
-};
+import { Task } from "./task.js";
 
 const highlightCurrentTask = () => {
 	const currentlyHighlightedTask = document.querySelector(".highlight");
@@ -29,7 +24,8 @@ const populateCurrentTaskDiv = (task) => {
 
 const populateSidebar = () => {
 	taskList.tasks.forEach((task) => {
-		// sidebar.append(task.createPElement());
+		const sameTask = new Task(task.id, task.value);
+		sidebar.append(sameTask.createPElement());
 	});
 };
 
@@ -70,10 +66,7 @@ const newSelect = document.querySelector("#new");
 const listInput = document.querySelector("#list");
 const taskInput = document.querySelector("#task");
 
-
-
 const submitButton = document.querySelector(".submitButton");
-
 
 const addTask = () => {
 	if (taskInput.value.trim() === "") {
@@ -95,11 +88,10 @@ const addTask = () => {
 };
 
 newSelect.addEventListener("click", () => {
-	if(newSelect.value === "list"){
+	if (newSelect.value === "list") {
 		listInput.disabled = false;
 		taskInput.disabled = true;
-	}
-	else if(newSelect.value === "task"){
+	} else if (newSelect.value === "task") {
 		listInput.disabled = true;
 		taskInput.disabled = false;
 	}
@@ -113,8 +105,9 @@ taskInput.addEventListener("keyup", (event) => {
 
 submitButton.addEventListener("click", () => {
 	const newSelect = document.querySelector("#new");
-	if(newSelect.value === "task"){
+	if (newSelect.value === "task") {
 		addTask();
+		taskInput.value = "";
 	}
 });
 
@@ -123,15 +116,16 @@ deleteButton.addEventListener("click", () => {
 		`.sidebar p:nth-child(${taskList.currentTaskIndex + 2})`
 	);
 
-	if(taskList.tasks.length > 1){
+	if (taskList.tasks.length > 1) {
 		textNode.textContent =
-		taskList.tasks[(taskList.currentTaskIndex + 1) % taskList.tasks.length];
-	}
-	else{
+			taskList.tasks[
+				(taskList.currentTaskIndex + 1) % taskList.tasks.length
+			];
+	} else {
 		textNode.textContent = "";
 		buttons.hidden = true;
 	}
-	
+
 	taskList.tasks.splice(taskList.currentTaskIndex, 1);
 	localStorage.setItem("taskList", JSON.stringify(taskList));
 
