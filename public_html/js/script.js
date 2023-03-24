@@ -157,7 +157,7 @@ nextButton.addEventListener("click", () => {
 	taskList.currentTaskIndex =
 		(taskList.currentTaskIndex + 1) % taskList.tasks.length;
 	localStorage.setItem("taskList", JSON.stringify(taskList));
-	textNode.textContent = taskList.tasks[taskList.currentTaskIndex];
+	textNode.textContent = taskList.tasks[taskList.currentTaskIndex].value;
 
 	highlightCurrentTask();
 });
