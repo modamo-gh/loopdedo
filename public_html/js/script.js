@@ -109,6 +109,11 @@ submitButton.addEventListener("click", () => {
 		addTask();
 		taskInput.value = "";
 	}
+	else if(newSelect.value === "list"){
+		const newList = new List(listInput.value, 0, []);
+		taskList.tasks.push(newList);
+		localStorage.setItem("taskList", taskList);
+	}
 });
 
 deleteButton.addEventListener("click", () => {
