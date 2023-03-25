@@ -5,6 +5,21 @@ const addNewListOption = (listName) => {
 	listOption.value = listName;
 	listOption.textContent = listName;
 	chooseListSelect.appendChild(listOption);
+};
+
+const createNewList = () => {
+	if (listInput.value.trim() === "") {
+		return;
+	}
+
+	const newListName = listInput.value;
+	const newList = new List(newListName, 0, []);
+	localStorage.setItem(newList.getName(), JSON.stringify(newList));
+
+	lists.push(newList.getName());
+	localStorage.setItem("lists", JSON.stringify(lists));
+
+	return newList;
 }
 
 const highlightCurrentTask = () => {
@@ -30,26 +45,29 @@ const populateCurrentTaskDiv = (task) => {
 };
 
 const populateCurrentListSelect = () => {
-	for(let listIndex = 1; listIndex <  lists.length; listIndex++){
+	for (let listIndex = 1; listIndex < lists.length; listIndex++) {
 		addNewListOption(lists[listIndex]);
 	}
-}
+};
 
 const populateSidebar = (list) => {
-	list.tasks.forEach(item => {
-		if(item.type === "Task"){
+	list.tasks.forEach((item) => {
+		if (item.type === "Task") {
 			const sameTask = new Task(item.id, item.value);
 			sidebar.append(sameTask.createPElement());
-		}
-		else{
-			const sameList = new List(item.name, item.currentTaskIndex, item.tasks);
+		} else {
+			const sameList = new List(
+				item.name,
+				item.currentTaskIndex,
+				item.tasks
+			);
 			sidebar.append(sameList.createH3Element());
 
 			populateSidebar(item);
 		}
-	})
+	});
 	// taskList.tasks.forEach((task) => {
-	// 	
+	//
 	// });
 };
 
@@ -58,7 +76,7 @@ const resetForm = () => {
 	newSelect.disabled = false;
 	listInput.value = "";
 	taskInput.disabled = false;
-}
+};
 
 const retrieveLists = () => {
 	if (!localStorage.getItem("lists")) {
@@ -72,7 +90,7 @@ const retrieveLists = () => {
 };
 
 const retrieveTasks = () => {
-		return JSON.parse(localStorage.getItem("taskList"));
+	return JSON.parse(localStorage.getItem("taskList"));
 };
 
 const sidebar = document.querySelector(".sidebar");
@@ -131,26 +149,31 @@ const addTask = () => {
 };
 
 chooseListSelect.addEventListener("click", () => {
-	if(chooseListSelect.value !== "select" && chooseListSelect.value !== "create"){
+	if (
+		chooseListSelect.value !== "select" &&
+		chooseListSelect.value !== "create"
+	) {
 		currentListHeader.textContent = chooseListSelect.value;
 
-		if(chooseListSelect.value === "Default" && !localStorage.getItem("Default")){
+		if (
+			chooseListSelect.value === "Default" &&
+			!localStorage.getItem("Default")
+		) {
 			const defaultList = new List("Default", 0, []);
 			localStorage.setItem("Default", JSON.stringify(defaultList));
 			populateSidebar(defaultList);
-		}
-		else{
-			const selectedList = JSON.parse(localStorage.getItem(chooseListSelect.value));
-		
+		} else {
+			const selectedList = JSON.parse(
+				localStorage.getItem(chooseListSelect.value)
+			);
+
 			populateSidebar(selectedList);
 		}
-	}
-	else if(chooseListSelect.value === "create"){
+	} else if (chooseListSelect.value === "create") {
 		newSelect.disabled = true;
 		taskInput.disabled = true;
 	}
-	
-})
+});
 
 newSelect.addEventListener("click", () => {
 	if (newSelect.value === "list") {
@@ -162,26 +185,15 @@ newSelect.addEventListener("click", () => {
 	}
 });
 
-listInput.addEventListener("keyup", event => {
+listInput.addEventListener("keyup", (event) => {
 	if (event.key === "Enter") {
-		if(chooseListSelect.value === "create"){
-			if (listInput.value.trim() === "") {
-				return;
-			}
-	
-			const newListName = listInput.value;
-			const newList = new List(newListName, 0, []);
-			localStorage.setItem(newList.getName(), JSON.stringify(newList));
-	
-			lists.push(newList.getName());
-			localStorage.setItem("lists", JSON.stringify(lists));
-	
+		if (chooseListSelect.value === "create") {
+			const newList = createNewList();
 			addNewListOption(newList.getName());
-	
 			resetForm();
 		}
 	}
-})
+});
 
 taskInput.addEventListener("keyup", (event) => {
 	if (event.key === "Enter") {
@@ -191,27 +203,16 @@ taskInput.addEventListener("keyup", (event) => {
 });
 
 submitButton.addEventListener("click", () => {
-	if(chooseListSelect.value === "create"){
-		if (listInput.value.trim() === "") {
-			return;
-		}
-
-		const newListName = listInput.value;
-		const newList = new List(newListName, 0, []);
-		localStorage.setItem(newList.getName(), JSON.stringify(newList));
-
-		lists.push(newList.getName());
-		localStorage.setItem("lists", JSON.stringify(lists));
+	if (chooseListSelect.value === "create") {
+		const newList = createNewList();
 
 		addNewListOption(newList.getName());
 
 		resetForm();
-	}
-	else if (newSelect.value === "task") {
+	} else if (newSelect.value === "task") {
 		addTask();
 		taskInput.value = "";
-	}
-	else if(newSelect.value === "list"){
+	} else if (newSelect.value === "list") {
 		const newList = new List(listInput.value, 0, []);
 		taskList.tasks.push(newList);
 		localStorage.setItem("taskList", JSON.stringify(taskList));
