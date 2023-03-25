@@ -7,6 +7,28 @@ const addNewListOption = (listName) => {
 	chooseListSelect.appendChild(listOption);
 };
 
+const addTask = () => {
+	if (taskInput.value.trim() === "") {
+		return;
+	}
+	
+	const newTask = new Task(currentList.tasks.length + 1, taskInput.value);
+	currentList.tasks.push(newTask);
+	localStorage.setItem(currentList.name, JSON.stringify(currentList));
+
+	items.appendChild(newTask.createPElement());
+
+	if (currentList.tasks.length === 1) {
+		populateCurrentTaskDiv(taskInput.value);
+		highlightCurrentTask();
+	}
+};
+
+const clearSidebar = () => {
+	const currentItems = items.childNodes;
+	currentItems.forEach(item => items.removeChild(item));
+}
+
 const createNewList = () => {
 	if (listInput.value.trim() === "") {
 		return;
@@ -29,7 +51,7 @@ const highlightCurrentTask = () => {
 	}
 
 	const taskToHighlight = document.querySelector(
-		`.sidebar p:nth-child(${taskList.currentTaskIndex + 2})`
+		`.sidebar p:nth-child(${currentList.currentTaskIndex + 2})`
 	);
 	if (taskToHighlight) {
 		taskToHighlight.classList.add("highlight");
@@ -51,17 +73,18 @@ const populateCurrentListSelect = () => {
 };
 
 const populateSidebar = (list) => {
+
 	list.tasks.forEach((item) => {
 		if (item.type === "Task") {
 			const sameTask = new Task(item.id, item.value);
-			sidebar.append(sameTask.createPElement());
+			items.append(sameTask.createPElement());
 		} else {
 			const sameList = new List(
 				item.name,
 				item.currentTaskIndex,
 				item.tasks
 			);
-			sidebar.append(sameList.createH3Element());
+			items.append(sameList.createH3Element());
 
 			populateSidebar(item);
 		}
@@ -89,11 +112,8 @@ const retrieveLists = () => {
 	}
 };
 
-const retrieveTasks = () => {
-	return JSON.parse(localStorage.getItem("taskList"));
-};
-
 const sidebar = document.querySelector(".sidebar");
+const items = document.querySelector(".items");
 const currentListHeader = document.querySelector("h2");
 const chooseListSelect = document.querySelector("#chooseList");
 const newSelect = document.querySelector("#new");
@@ -103,7 +123,7 @@ const submitButton = document.querySelector(".submitButton");
 
 const lists = retrieveLists();
 
-const taskList = retrieveTasks();
+let currentList;
 
 populateCurrentListSelect();
 // populateSidebar(taskList);
@@ -129,25 +149,6 @@ buttons.appendChild(nextButton);
 // 	highlightCurrentTask();
 // }
 
-const addTask = () => {
-	if (taskInput.value.trim() === "") {
-		return;
-	}
-
-	const newTask = new Task(taskList.tasks.length + 1, taskInput.value);
-	taskList.tasks.push(newTask);
-	localStorage.setItem("taskList", JSON.stringify(taskList));
-
-	const sidebar = document.querySelector(".sidebar");
-
-	sidebar.appendChild(newTask.createPElement());
-
-	if (taskList.tasks.length === 1) {
-		populateCurrentTaskDiv(taskInput.value);
-		highlightCurrentTask();
-	}
-};
-
 chooseListSelect.addEventListener("click", () => {
 	if (
 		chooseListSelect.value !== "select" &&
@@ -160,20 +161,27 @@ chooseListSelect.addEventListener("click", () => {
 			!localStorage.getItem("Default")
 		) {
 			const defaultList = new List("Default", 0, []);
-			localStorage.setItem("Default", JSON.stringify(defaultList));
-			populateSidebar(defaultList);
+			localStorage.setItem(defaultList.getName(), JSON.stringify(defaultList));
+			currentList = defaultList;
 		} else {
 			const selectedList = JSON.parse(
 				localStorage.getItem(chooseListSelect.value)
 			);
-
-			populateSidebar(selectedList);
+			currentList = selectedList;
 		}
+
+		clearSidebar();
+		populateSidebar(currentList);
 	} else if (chooseListSelect.value === "create") {
 		newSelect.disabled = true;
+		listInput.disabled = false;
 		taskInput.disabled = true;
 	}
 });
+
+const retrieveTasks = (currentList) => {
+	return JSON.parse(localStorage.getItem(currentList.name));
+};
 
 newSelect.addEventListener("click", () => {
 	if (newSelect.value === "list") {
@@ -214,46 +222,46 @@ submitButton.addEventListener("click", () => {
 		taskInput.value = "";
 	} else if (newSelect.value === "list") {
 		const newList = new List(listInput.value, 0, []);
-		taskList.tasks.push(newList);
-		localStorage.setItem("taskList", JSON.stringify(taskList));
+		currentList.tasks.push(newList);
+		localStorage.setItem("taskList", JSON.stringify(currentList));
 		localStorage.setItem(newList.getName(), JSON.stringify(newList));
 		lists.push(newList.name);
 		localStorage.setItem("lists", JSON.stringify(lists));
 		addNewListOption(newList.getName());
-		sidebar.append(newList.createH3Element());
+		items.append(newList.createH3Element());
 	}
 });
 
 deleteButton.addEventListener("click", () => {
 	const task = document.querySelector(
-		`.sidebar p:nth-child(${taskList.currentTaskIndex + 2})`
+		`.sidebar p:nth-child(${currentList.currentTaskIndex + 2})`
 	);
 
-	if (taskList.tasks.length > 1) {
+	if (currentList.tasks.length > 1) {
 		textNode.textContent =
-			taskList.tasks[
-				(taskList.currentTaskIndex + 1) % taskList.tasks.length
+			currentList.tasks[
+				(currentList.currentTaskIndex + 1) % currentList.tasks.length
 			].value;
 	} else {
 		textNode.textContent = "";
 		buttons.hidden = true;
 	}
 
-	taskList.tasks.splice(taskList.currentTaskIndex, 1);
-	localStorage.setItem("taskList", JSON.stringify(taskList));
+	currentList.tasks.splice(currentList.currentTaskIndex, 1);
+	localStorage.setItem("taskList", JSON.stringify(currentList));
 
 	const currentlyHighlightedTask = document.querySelector(".highlight");
 	if (currentlyHighlightedTask) {
 		currentlyHighlightedTask.classList.remove("highlight");
 	}
 
-	sidebar.removeChild(task);
+	items.removeChild(task);
 
-	if (taskList.currentTaskIndex === taskList.tasks.length) {
-		taskList.currentTaskIndex = 0;
+	if (currentList.currentTaskIndex === currentList.tasks.length) {
+		currentList.currentTaskIndex = 0;
 	}
 	const taskToHighlight = document.querySelector(
-		`.sidebar p:nth-child(${taskList.currentTaskIndex + 2})`
+		`.sidebar p:nth-child(${currentList.currentTaskIndex + 2})`
 	);
 	if (taskToHighlight) {
 		taskToHighlight.classList.add("highlight");
@@ -261,10 +269,10 @@ deleteButton.addEventListener("click", () => {
 });
 
 nextButton.addEventListener("click", () => {
-	taskList.currentTaskIndex =
-		(taskList.currentTaskIndex + 1) % taskList.tasks.length;
-	localStorage.setItem("taskList", JSON.stringify(taskList));
-	textNode.textContent = taskList.tasks[taskList.currentTaskIndex].value;
+	currentList.currentTaskIndex =
+		(currentList.currentTaskIndex + 1) % currentList.tasks.length;
+	localStorage.setItem("taskList", JSON.stringify(currentList));
+	textNode.textContent = currentList.tasks[currentList.currentTaskIndex].value;
 
 	highlightCurrentTask();
 });
