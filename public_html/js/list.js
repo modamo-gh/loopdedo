@@ -12,4 +12,12 @@ class List {
 
         return h3;
     }
+
+    getName(){
+        return this.name;
+    }
+
+    setName(newName){
+        this.name = newName;
+    }
 }

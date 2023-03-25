@@ -60,7 +60,6 @@ const populateSidebar = (list) => {
 const retrieveLists = () => {
 	if (!localStorage.getItem("lists")) {
 		const lists = [];
-		console.log(lists);
 		localStorage.setItem("lists", JSON.stringify(lists));
 
 		return lists;
@@ -70,18 +69,7 @@ const retrieveLists = () => {
 };
 
 const retrieveTasks = () => {
-	if (!localStorage.getItem("taskList")) {
-		const newList = new List("Default", 0, []);
-		
-		localStorage.setItem("taskList", JSON.stringify(newList));
-		lists.push(newList.name);
-		localStorage.setItem("lists", JSON.stringify(lists));
-
-		return newList;
-	} else {
 		return JSON.parse(localStorage.getItem("taskList"));
-		
-	}
 };
 
 const lists = retrieveLists();
@@ -89,7 +77,7 @@ const lists = retrieveLists();
 const taskList = retrieveTasks();
 
 populateCurrentListSelect();
-populateSidebar(taskList);
+// populateSidebar(taskList);
 
 const currentTaskDiv = document.querySelector(".currentTask");
 const currentTask = document.createElement("p");
@@ -107,10 +95,10 @@ buttons.classList.add("buttons");
 buttons.appendChild(deleteButton);
 buttons.appendChild(nextButton);
 
-if (taskList.tasks.length) {
-	populateCurrentTaskDiv(taskList.tasks[taskList.currentTaskIndex].value);
-	highlightCurrentTask();
-}
+// if (taskList.tasks.length) {
+// 	populateCurrentTaskDiv(taskList.tasks[taskList.currentTaskIndex].value);
+// 	highlightCurrentTask();
+// }
 const newSelect = document.querySelector("#new");
 const listInput = document.querySelector("#list");
 const taskInput = document.querySelector("#task");
@@ -139,7 +127,19 @@ const addTask = () => {
 chooseListSelect.addEventListener("click", () => {
 	if(chooseListSelect.value !== "select" && chooseListSelect.value !== "create"){
 		currentList.textContent = chooseListSelect.value;
+
+		if(chooseListSelect.value === "Default" && !localStorage.getItem("Default")){
+			const defaultList = new List("Default", 0, []);
+			localStorage.setItem("Default", JSON.stringify(defaultList));
+			populateSidebar(defaultList);
+		}
+		else{
+			const selectedList = JSON.parse(localStorage.getItem(chooseListSelect.value));
+		
+			populateSidebar(selectedList);
+		}
 	}
+	
 })
 
 newSelect.addEventListener("click", () => {
@@ -169,6 +169,7 @@ submitButton.addEventListener("click", () => {
 		const newList = new List(listInput.value, 0, []);
 		taskList.tasks.push(newList);
 		localStorage.setItem("taskList", JSON.stringify(taskList));
+		localStorage.setItem(newList.getName(), JSON.stringify(newList));
 		lists.push(newList.name);
 		localStorage.setItem("lists", JSON.stringify(lists));
 		addNewListOption(newList.name);
