@@ -1,10 +1,14 @@
 import { Task } from "./task.js";
 
+const sidebar = document.querySelector(".sidebar");
+const currentList = document.querySelector("h2");
+const chooseListSelect = document.querySelector("#chooseList");
+
 const addNewListOption = (list) => {
 	const listOption = document.createElement("option");
 	listOption.value = list;
 	listOption.textContent = list;
-	currentListSelect.appendChild(listOption);
+	chooseListSelect.appendChild(listOption);
 }
 
 const highlightCurrentTask = () => {
@@ -42,9 +46,8 @@ const populateSidebar = (list) => {
 			sidebar.append(sameTask.createPElement());
 		}
 		else{
-			const listTitle = document.createElement("h3");
-			listTitle.textContent = item.name;
-			sidebar.append(listTitle);
+			const sameList = new List(item.name, item.currentTaskIndex, item.tasks);
+			sidebar.append(sameList.createH3Element());
 
 			populateSidebar(item);
 		}
@@ -83,10 +86,7 @@ const retrieveTasks = () => {
 
 const lists = retrieveLists();
 
-const currentListSelect = document.querySelector("#currentList");
-
 const taskList = retrieveTasks();
-const sidebar = document.querySelector(".sidebar");
 
 populateCurrentListSelect();
 populateSidebar(taskList);
@@ -136,6 +136,12 @@ const addTask = () => {
 	}
 };
 
+chooseListSelect.addEventListener("click", () => {
+	if(chooseListSelect.value !== "select" && chooseListSelect.value !== "create"){
+		currentList.textContent = chooseListSelect.value;
+	}
+})
+
 newSelect.addEventListener("click", () => {
 	if (newSelect.value === "list") {
 		listInput.disabled = false;
@@ -149,6 +155,7 @@ newSelect.addEventListener("click", () => {
 taskInput.addEventListener("keyup", (event) => {
 	if (event.key === "Enter") {
 		addTask();
+		taskInput.value = "";
 	}
 });
 
@@ -165,6 +172,7 @@ submitButton.addEventListener("click", () => {
 		lists.push(newList.name);
 		localStorage.setItem("lists", JSON.stringify(lists));
 		addNewListOption(newList.name);
+		sidebar.append(newList.createH3Element());
 	}
 });
 
