@@ -30,9 +30,9 @@ const populateCurrentTaskDiv = (task) => {
 };
 
 const populateCurrentListSelect = () => {
-	lists.forEach(list => {
-		addNewListOption(list);
-	});
+	for(let listIndex = 1; listIndex <  lists.length; listIndex++){
+		addNewListOption(lists[listIndex]);
+	}
 }
 
 const populateSidebar = (list) => {
