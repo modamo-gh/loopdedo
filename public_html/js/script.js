@@ -162,6 +162,27 @@ newSelect.addEventListener("click", () => {
 	}
 });
 
+listInput.addEventListener("keyup", event => {
+	if (event.key === "Enter") {
+		if(chooseListSelect.value === "create"){
+			if (listInput.value.trim() === "") {
+				return;
+			}
+	
+			const newListName = listInput.value;
+			const newList = new List(newListName, 0, []);
+			localStorage.setItem(newList.getName(), JSON.stringify(newList));
+	
+			lists.push(newList.getName());
+			localStorage.setItem("lists", JSON.stringify(lists));
+	
+			addNewListOption(newList.getName());
+	
+			resetForm();
+		}
+	}
+})
+
 taskInput.addEventListener("keyup", (event) => {
 	if (event.key === "Enter") {
 		addTask();
