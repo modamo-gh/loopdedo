@@ -1,13 +1,9 @@
 import { Task } from "./task.js";
 
-const sidebar = document.querySelector(".sidebar");
-const currentList = document.querySelector("h2");
-const chooseListSelect = document.querySelector("#chooseList");
-
-const addNewListOption = (list) => {
+const addNewListOption = (listName) => {
 	const listOption = document.createElement("option");
-	listOption.value = list;
-	listOption.textContent = list;
+	listOption.value = listName;
+	listOption.textContent = listName;
 	chooseListSelect.appendChild(listOption);
 }
 
@@ -57,9 +53,16 @@ const populateSidebar = (list) => {
 	// });
 };
 
+const resetForm = () => {
+	chooseListSelect.selectedIndex = 0;
+	newSelect.disabled = false;
+	listInput.value = "";
+	taskInput.disabled = false;
+}
+
 const retrieveLists = () => {
 	if (!localStorage.getItem("lists")) {
-		const lists = [];
+		const lists = ["Default"];
 		localStorage.setItem("lists", JSON.stringify(lists));
 
 		return lists;
@@ -71,6 +74,14 @@ const retrieveLists = () => {
 const retrieveTasks = () => {
 		return JSON.parse(localStorage.getItem("taskList"));
 };
+
+const sidebar = document.querySelector(".sidebar");
+const currentListHeader = document.querySelector("h2");
+const chooseListSelect = document.querySelector("#chooseList");
+const newSelect = document.querySelector("#new");
+const listInput = document.querySelector("#list");
+const taskInput = document.querySelector("#task");
+const submitButton = document.querySelector(".submitButton");
 
 const lists = retrieveLists();
 
@@ -99,11 +110,6 @@ buttons.appendChild(nextButton);
 // 	populateCurrentTaskDiv(taskList.tasks[taskList.currentTaskIndex].value);
 // 	highlightCurrentTask();
 // }
-const newSelect = document.querySelector("#new");
-const listInput = document.querySelector("#list");
-const taskInput = document.querySelector("#task");
-
-const submitButton = document.querySelector(".submitButton");
 
 const addTask = () => {
 	if (taskInput.value.trim() === "") {
@@ -126,7 +132,7 @@ const addTask = () => {
 
 chooseListSelect.addEventListener("click", () => {
 	if(chooseListSelect.value !== "select" && chooseListSelect.value !== "create"){
-		currentList.textContent = chooseListSelect.value;
+		currentListHeader.textContent = chooseListSelect.value;
 
 		if(chooseListSelect.value === "Default" && !localStorage.getItem("Default")){
 			const defaultList = new List("Default", 0, []);
@@ -138,6 +144,10 @@ chooseListSelect.addEventListener("click", () => {
 		
 			populateSidebar(selectedList);
 		}
+	}
+	else if(chooseListSelect.value === "create"){
+		newSelect.disabled = true;
+		taskInput.disabled = true;
 	}
 	
 })
@@ -160,8 +170,23 @@ taskInput.addEventListener("keyup", (event) => {
 });
 
 submitButton.addEventListener("click", () => {
-	const newSelect = document.querySelector("#new");
-	if (newSelect.value === "task") {
+	if(chooseListSelect.value === "create"){
+		if (listInput.value.trim() === "") {
+			return;
+		}
+
+		const newListName = listInput.value;
+		const newList = new List(newListName, 0, []);
+		localStorage.setItem(newList.getName(), JSON.stringify(newList));
+
+		lists.push(newList.getName());
+		localStorage.setItem("lists", JSON.stringify(lists));
+
+		addNewListOption(newList.getName());
+
+		resetForm();
+	}
+	else if (newSelect.value === "task") {
 		addTask();
 		taskInput.value = "";
 	}
@@ -172,7 +197,7 @@ submitButton.addEventListener("click", () => {
 		localStorage.setItem(newList.getName(), JSON.stringify(newList));
 		lists.push(newList.name);
 		localStorage.setItem("lists", JSON.stringify(lists));
-		addNewListOption(newList.name);
+		addNewListOption(newList.getName());
 		sidebar.append(newList.createH3Element());
 	}
 });
