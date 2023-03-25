@@ -52,7 +52,8 @@ footer {
 }
 
 h2,
-.sidebar p {
+.sidebar p,
+h3 {
 	text-align: center;
 }
 
@@ -62,7 +63,8 @@ h2 {
 	padding: 16px;
 }
 
-.sidebar p {
+.sidebar p,
+h3 {
 	margin: 8px;
 }
 

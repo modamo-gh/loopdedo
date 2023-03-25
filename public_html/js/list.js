@@ -3,5 +3,6 @@ class List {
         this.name = name;
         this.currentTaskIndex = currentTaskIndex;
         this.tasks = tasks;
+        this.type = "List";
     }
 }

@@ -34,11 +34,24 @@ const populateCurrentListSelect = () => {
 		addNewListOption(list);
 	});
 }
-const populateSidebar = () => {
-	taskList.tasks.forEach((task) => {
-		const sameTask = new Task(task.id, task.value);
-		sidebar.append(sameTask.createPElement());
-	});
+
+const populateSidebar = (list) => {
+	list.tasks.forEach(item => {
+		if(item.type === "Task"){
+			const sameTask = new Task(item.id, item.value);
+			sidebar.append(sameTask.createPElement());
+		}
+		else{
+			const listTitle = document.createElement("h3");
+			listTitle.textContent = item.name;
+			sidebar.append(listTitle);
+
+			populateSidebar(item);
+		}
+	})
+	// taskList.tasks.forEach((task) => {
+	// 	
+	// });
 };
 
 const retrieveLists = () => {
@@ -76,7 +89,7 @@ const taskList = retrieveTasks();
 const sidebar = document.querySelector(".sidebar");
 
 populateCurrentListSelect();
-populateSidebar();
+populateSidebar(taskList);
 
 const currentTaskDiv = document.querySelector(".currentTask");
 const currentTask = document.createElement("p");
