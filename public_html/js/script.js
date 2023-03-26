@@ -26,7 +26,10 @@ const addTask = () => {
 
 const clearSidebar = () => {
 	const currentItems = items.childNodes;
-	currentItems.forEach(item => items.removeChild(item));
+	
+	for(let itemIndex = currentItems.length - 1; itemIndex >= 0; itemIndex--){
+		items.removeChild(currentItems[itemIndex]);
+	}
 }
 
 const createNewList = () => {
@@ -51,7 +54,7 @@ const highlightCurrentTask = () => {
 	}
 
 	const taskToHighlight = document.querySelector(
-		`.sidebar p:nth-child(${currentList.currentTaskIndex + 2})`
+		`.items p:nth-child(${currentList.currentTaskIndex + 1})`
 	);
 	if (taskToHighlight) {
 		taskToHighlight.classList.add("highlight");
@@ -73,25 +76,21 @@ const populateCurrentListSelect = () => {
 };
 
 const populateSidebar = (list) => {
-
 	list.tasks.forEach((item) => {
 		if (item.type === "Task") {
 			const sameTask = new Task(item.id, item.value);
-			items.append(sameTask.createPElement());
-		} else {
+			items.appendChild(sameTask.createPElement());
+		} else if(item.type === "List") {
 			const sameList = new List(
 				item.name,
 				item.currentTaskIndex,
 				item.tasks
 			);
-			items.append(sameList.createH3Element());
+			items.appendChild(sameList.createH3Element());
 
-			populateSidebar(item);
+			populateSidebar(sameList);
 		}
 	});
-	// taskList.tasks.forEach((task) => {
-	//
-	// });
 };
 
 const resetForm = () => {
@@ -154,6 +153,9 @@ chooseListSelect.addEventListener("click", () => {
 		chooseListSelect.value !== "select" &&
 		chooseListSelect.value !== "create"
 	) {
+		newSelect.disabled = false;
+		taskInput.disabled = false;
+
 		currentListHeader.textContent = chooseListSelect.value;
 
 		if (
@@ -164,18 +166,21 @@ chooseListSelect.addEventListener("click", () => {
 			localStorage.setItem(defaultList.getName(), JSON.stringify(defaultList));
 			currentList = defaultList;
 		} else {
-			const selectedList = JSON.parse(
+			currentList = JSON.parse(
 				localStorage.getItem(chooseListSelect.value)
 			);
-			currentList = selectedList;
 		}
 
 		clearSidebar();
 		populateSidebar(currentList);
+		highlightCurrentTask();
 	} else if (chooseListSelect.value === "create") {
 		newSelect.disabled = true;
 		listInput.disabled = false;
 		taskInput.disabled = true;
+	}
+	else{
+		resetForm();
 	}
 });
 
@@ -223,18 +228,20 @@ submitButton.addEventListener("click", () => {
 	} else if (newSelect.value === "list") {
 		const newList = new List(listInput.value, 0, []);
 		currentList.tasks.push(newList);
-		localStorage.setItem("taskList", JSON.stringify(currentList));
+		localStorage.setItem(currentList.name, JSON.stringify(currentList));
 		localStorage.setItem(newList.getName(), JSON.stringify(newList));
 		lists.push(newList.name);
 		localStorage.setItem("lists", JSON.stringify(lists));
 		addNewListOption(newList.getName());
 		items.append(newList.createH3Element());
 	}
+
+	highlightCurrentTask();
 });
 
 deleteButton.addEventListener("click", () => {
 	const task = document.querySelector(
-		`.sidebar p:nth-child(${currentList.currentTaskIndex + 2})`
+		`.sidebar p:nth-child(${currentList.currentTaskIndex + 1})`
 	);
 
 	if (currentList.tasks.length > 1) {
@@ -248,7 +255,7 @@ deleteButton.addEventListener("click", () => {
 	}
 
 	currentList.tasks.splice(currentList.currentTaskIndex, 1);
-	localStorage.setItem("taskList", JSON.stringify(currentList));
+	localStorage.setItem(currentList.name, JSON.stringify(currentList));
 
 	const currentlyHighlightedTask = document.querySelector(".highlight");
 	if (currentlyHighlightedTask) {
@@ -261,7 +268,7 @@ deleteButton.addEventListener("click", () => {
 		currentList.currentTaskIndex = 0;
 	}
 	const taskToHighlight = document.querySelector(
-		`.sidebar p:nth-child(${currentList.currentTaskIndex + 2})`
+		`.sidebar p:nth-child(${currentList.currentTaskIndex + 1})`
 	);
 	if (taskToHighlight) {
 		taskToHighlight.classList.add("highlight");
@@ -271,7 +278,7 @@ deleteButton.addEventListener("click", () => {
 nextButton.addEventListener("click", () => {
 	currentList.currentTaskIndex =
 		(currentList.currentTaskIndex + 1) % currentList.tasks.length;
-	localStorage.setItem("taskList", JSON.stringify(currentList));
+	localStorage.setItem(currentList.name, JSON.stringify(currentList));
 	textNode.textContent = currentList.tasks[currentList.currentTaskIndex].value;
 
 	highlightCurrentTask();
