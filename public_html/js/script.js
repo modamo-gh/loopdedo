@@ -11,7 +11,7 @@ const addTask = () => {
 	if (taskInput.value.trim() === "") {
 		return;
 	}
-	
+
 	const newTask = new Task(currentList.tasks.length + 1, taskInput.value);
 	currentList.tasks.push(newTask);
 	localStorage.setItem(currentList.name, JSON.stringify(currentList));
@@ -26,11 +26,11 @@ const addTask = () => {
 
 const clearSidebar = () => {
 	const currentItems = items.childNodes;
-	
-	for(let itemIndex = currentItems.length - 1; itemIndex >= 0; itemIndex--){
+
+	for (let itemIndex = currentItems.length - 1; itemIndex >= 0; itemIndex--) {
 		items.removeChild(currentItems[itemIndex]);
 	}
-}
+};
 
 const createNewList = () => {
 	if (listInput.value.trim() === "") {
@@ -45,7 +45,7 @@ const createNewList = () => {
 	localStorage.setItem("lists", JSON.stringify(lists));
 
 	return newList;
-}
+};
 
 const highlightCurrentTask = () => {
 	const currentlyHighlightedTask = document.querySelector(".highlight");
@@ -80,7 +80,7 @@ const populateSidebar = (list) => {
 		if (item.type === "Task") {
 			const sameTask = new Task(item.id, item.value);
 			items.appendChild(sameTask.createPElement());
-		} else if(item.type === "List") {
+		} else if (item.type === "List") {
 			const sameList = new List(
 				item.name,
 				item.currentTaskIndex,
@@ -111,7 +111,6 @@ const retrieveLists = () => {
 	}
 };
 
-const sidebar = document.querySelector(".sidebar");
 const items = document.querySelector(".items");
 const currentListHeader = document.querySelector("h2");
 const chooseListSelect = document.querySelector("#chooseList");
@@ -143,11 +142,6 @@ buttons.classList.add("buttons");
 buttons.appendChild(deleteButton);
 buttons.appendChild(nextButton);
 
-// if (taskList.tasks.length) {
-// 	populateCurrentTaskDiv(taskList.tasks[taskList.currentTaskIndex].value);
-// 	highlightCurrentTask();
-// }
-
 chooseListSelect.addEventListener("click", () => {
 	if (
 		chooseListSelect.value !== "select" &&
@@ -163,7 +157,10 @@ chooseListSelect.addEventListener("click", () => {
 			!localStorage.getItem("Default")
 		) {
 			const defaultList = new List("Default", 0, []);
-			localStorage.setItem(defaultList.getName(), JSON.stringify(defaultList));
+			localStorage.setItem(
+				defaultList.getName(),
+				JSON.stringify(defaultList)
+			);
 			currentList = defaultList;
 		} else {
 			currentList = JSON.parse(
@@ -174,12 +171,12 @@ chooseListSelect.addEventListener("click", () => {
 		clearSidebar();
 		populateSidebar(currentList);
 		highlightCurrentTask();
+		populateCurrentTaskDiv(currentList.tasks[currentList.currentTaskIndex].value)
 	} else if (chooseListSelect.value === "create") {
 		newSelect.disabled = true;
 		listInput.disabled = false;
 		taskInput.disabled = true;
-	}
-	else{
+	} else {
 		resetForm();
 	}
 });
@@ -279,7 +276,8 @@ nextButton.addEventListener("click", () => {
 	currentList.currentTaskIndex =
 		(currentList.currentTaskIndex + 1) % currentList.tasks.length;
 	localStorage.setItem(currentList.name, JSON.stringify(currentList));
-	textNode.textContent = currentList.tasks[currentList.currentTaskIndex].value;
+	textNode.textContent =
+		currentList.tasks[currentList.currentTaskIndex].value;
 
 	highlightCurrentTask();
 });
