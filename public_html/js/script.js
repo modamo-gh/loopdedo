@@ -124,7 +124,6 @@ const lists = retrieveLists();
 let currentList;
 
 populateCurrentListSelect();
-// populateSidebar(taskList);
 
 const currentTaskDiv = document.querySelector(".currentTask");
 const currentTask = document.createElement("p");
@@ -171,7 +170,14 @@ chooseListSelect.addEventListener("click", () => {
 		clearSidebar();
 		populateSidebar(currentList);
 		highlightCurrentTask();
-		populateCurrentTaskDiv(currentList.tasks[currentList.currentTaskIndex].value)
+		
+		if(currentList.tasks.length){
+			populateCurrentTaskDiv(currentList.tasks[currentList.currentTaskIndex].value);
+		}
+		else{
+			textNode.textContent = "";
+			buttons.hidden = true;
+		}
 	} else if (chooseListSelect.value === "create") {
 		newSelect.disabled = true;
 		listInput.disabled = false;
