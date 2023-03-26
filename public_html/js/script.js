@@ -81,12 +81,14 @@ const populateSidebar = (list) => {
 			const sameTask = new Task(item.id, item.value);
 			items.appendChild(sameTask.createPElement());
 		} else if (item.type === "List") {
-			const sameList = new List(
+			let sameList = new List(
 				item.name,
 				item.currentTaskIndex,
 				item.tasks
 			);
+
 			items.appendChild(sameList.createH3Element());
+			sameList = retrieveList(sameList);
 
 			populateSidebar(sameList);
 		}
@@ -187,7 +189,7 @@ chooseListSelect.addEventListener("click", () => {
 	}
 });
 
-const retrieveTasks = (currentList) => {
+const retrieveList = (currentList) => {
 	return JSON.parse(localStorage.getItem(currentList.name));
 };
 
