@@ -48,15 +48,21 @@ const createNewList = () => {
 };
 
 const getCurrentTask = (currentList) => {
-	let cl = currentList;
-	const sameList = new List(cl.name, cl.currentTaskIndex, cl.tasks);
-	if(sameList.type === "List"){
-		debugger;
-		return getCurrentTask(sameList.tasks[sameList.currentTaskIndex]);
+	debugger;
+	const currentItem = currentList.tasks[currentList.currentTaskIndex];
+	let currentTask;
+	if(currentItem.type === "List"){
+		currentTask = getCurrentTask(currentItem);
 	}
 	else{
-		return sameList.tasks[sameList.currentTaskIndex].value;
+		currentTask = currentList.tasks[currentList.currentTaskIndex].value;
 	}
+
+	currentList.currentTaskIndex =
+		(currentList.currentTaskIndex + 1) % currentList.tasks.length;
+	localStorage.setItem(currentList.name, JSON.stringify(currentList));
+
+	return currentTask;
 }
 
 const highlightCurrentTask = () => {
@@ -312,11 +318,6 @@ deleteButton.addEventListener("click", () => {
 });
 
 nextButton.addEventListener("click", () => {
-	currentList.currentTaskIndex =
-		(currentList.currentTaskIndex + 1) % currentList.tasks.length;
-	localStorage.setItem(currentList.name, JSON.stringify(currentList));
-	
-	console.log(getCurrentTask(currentList))
 	textNode.textContent = getCurrentTask(currentList);
 
 	highlightCurrentTask();
