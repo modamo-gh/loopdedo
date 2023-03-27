@@ -277,11 +277,9 @@ submitButton.addEventListener("click", () => {
 
 		addNewListOption(newList.getName());
 
-		resetForm();
 	} else if (newSelect.value === "task") {
 		addTask();
 		updateLists();
-		taskInput.value = "";
 	} else if (newSelect.value === "list") {
 		const newList = new List(listInput.value, 0, []);
 		currentList.tasks.push(newList);
@@ -291,9 +289,9 @@ submitButton.addEventListener("click", () => {
 		localStorage.setItem("lists", JSON.stringify(lists));
 		addNewListOption(newList.getName());
 		items.append(newList.createH3Element());
-		listInput.value = "";
 	}
 
+	resetForm();
 	highlightCurrentTask(getCurrentTaskID(currentList));
 });
 
