@@ -1,14 +1,15 @@
 export class Task {
-    constructor(id, value){
+    constructor(id, value, parentName){
         this.id = id;
         this.value = value;
         this.type = "Task";
+        this.parentName = parentName;
     }
 
     createPElement(){
         const p = document.createElement("p");
         p.classList.add("task");
-        p.dataset.id = this.id;
+        p.dataset.id = `${this.parentName}-${this.id}`;
         p.textContent = this.value;
 
         return p;

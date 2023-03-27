@@ -12,7 +12,7 @@ const addTask = () => {
 		return;
 	}
 
-	const newTask = new Task(currentList.tasks.length + 1, taskInput.value);
+	const newTask = new Task(currentList.tasks.length + 1, taskInput.value, currentList.name);
 	currentList.tasks.push(newTask);
 	localStorage.setItem(currentList.name, JSON.stringify(currentList));
 
@@ -20,7 +20,7 @@ const addTask = () => {
 
 	if (currentList.tasks.length === 1) {
 		populateCurrentTaskDiv(taskInput.value);
-		highlightCurrentTask();
+		highlightCurrentTask(getCurrentTaskID(currentList));
 	}
 };
 
@@ -48,31 +48,48 @@ const createNewList = () => {
 };
 
 const getCurrentTask = (currentList) => {
-	debugger;
 	const currentItem = currentList.tasks[currentList.currentTaskIndex];
 	let currentTask;
-	if(currentItem.type === "List"){
-		currentTask = getCurrentTask(currentItem);
+	if(currentItem){
+		if(currentItem.type === "List"){
+			currentTask = getCurrentTask(currentItem);
+		}
+		else{
+			currentTask = currentList.tasks[currentList.currentTaskIndex].value;
+		}
+	
+		currentList.currentTaskIndex =
+			(currentList.currentTaskIndex + 1) % currentList.tasks.length;
+		localStorage.setItem(currentList.name, JSON.stringify(currentList));
+	
+		return currentTask;
 	}
-	else{
-		currentTask = currentList.tasks[currentList.currentTaskIndex].value;
-	}
-
-	currentList.currentTaskIndex =
-		(currentList.currentTaskIndex + 1) % currentList.tasks.length;
-	localStorage.setItem(currentList.name, JSON.stringify(currentList));
-
-	return currentTask;
+	
 }
 
-const highlightCurrentTask = () => {
+const getCurrentTaskID = (currentList) => {
+	const currentItem = currentList.tasks[currentList.currentTaskIndex];
+	let currentTaskID;
+	if(currentItem){
+		if(currentItem.type === "List"){
+			currentTaskID = getCurrentTaskID(currentItem);
+		}
+		else{
+			currentTaskID = `${currentList.name}-${currentList.tasks[currentList.currentTaskIndex].id}`;
+		}
+	
+		return currentTaskID;
+	}
+}
+
+const highlightCurrentTask = (currentTaskID) => {
 	const currentlyHighlightedTask = document.querySelector(".highlight");
 	if (currentlyHighlightedTask) {
 		currentlyHighlightedTask.classList.remove("highlight");
 	}
 
 	const taskToHighlight = document.querySelector(
-		`.items p:nth-child(${currentList.currentTaskIndex + 1})`
+		`p[data-id=${currentTaskID}]`
 	);
 	if (taskToHighlight) {
 		taskToHighlight.classList.add("highlight");
@@ -96,7 +113,7 @@ const populateCurrentListSelect = () => {
 const populateSidebar = (list) => {
 	list.tasks.forEach((item) => {
 		if (item.type === "Task") {
-			const sameTask = new Task(item.id, item.value);
+			const sameTask = new Task(item.id, item.value, list.name);
 			items.appendChild(sameTask.createPElement());
 		} else if (item.type === "List") {
 			let sameList = new List(
@@ -208,7 +225,7 @@ chooseListSelect.addEventListener("click", () => {
 
 		clearSidebar();
 		populateSidebar(currentList);
-		highlightCurrentTask();
+		highlightCurrentTask(getCurrentTaskID(currentList));
 		
 		if(currentList.tasks.length){
 			populateCurrentTaskDiv(currentList.tasks[currentList.currentTaskIndex].value);
@@ -278,7 +295,7 @@ submitButton.addEventListener("click", () => {
 		listInput.value = "";
 	}
 
-	highlightCurrentTask();
+	highlightCurrentTask(getCurrentTaskID(currentList));
 });
 
 deleteButton.addEventListener("click", () => {
@@ -320,5 +337,5 @@ deleteButton.addEventListener("click", () => {
 nextButton.addEventListener("click", () => {
 	textNode.textContent = getCurrentTask(currentList);
 
-	highlightCurrentTask();
+	highlightCurrentTask(getCurrentTaskID(currentList));
 });
