@@ -267,7 +267,7 @@ listInput.addEventListener("keyup", (event) => {
 taskInput.addEventListener("keyup", (event) => {
 	if (event.key === "Enter") {
 		addTask();
-		taskInput.value = "";
+		resetForm();
 	}
 });
 
