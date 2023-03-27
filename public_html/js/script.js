@@ -93,8 +93,8 @@ const highlightCurrentTask = (currentTaskID) => {
 	}
 };
 
-const populateCurrentTaskDiv = (task) => {
-	textNode.textContent = task;
+const populateCurrentTaskDiv = (taskValue) => {
+	textNode.textContent = taskValue;
 	currentTask.appendChild(textNode);
 	currentTaskDiv.appendChild(currentTask);
 	currentTaskDiv.appendChild(buttons);
