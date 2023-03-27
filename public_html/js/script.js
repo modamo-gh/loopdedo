@@ -58,10 +58,6 @@ const getCurrentTask = (currentList) => {
 			currentTask = currentList.tasks[currentList.currentTaskIndex].value;
 		}
 	
-		currentList.currentTaskIndex =
-			(currentList.currentTaskIndex + 1) % currentList.tasks.length;
-		localStorage.setItem(currentList.name, JSON.stringify(currentList));
-	
 		return currentTask;
 	}
 	
@@ -335,7 +331,10 @@ deleteButton.addEventListener("click", () => {
 });
 
 nextButton.addEventListener("click", () => {
+	currentList.currentTaskIndex =
+			(currentList.currentTaskIndex + 1) % currentList.tasks.length;
+	localStorage.setItem(currentList.name, JSON.stringify(currentList));
+	
 	textNode.textContent = getCurrentTask(currentList);
-
 	highlightCurrentTask(getCurrentTaskID(currentList));
 });
