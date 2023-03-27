@@ -47,6 +47,18 @@ const createNewList = () => {
 	return newList;
 };
 
+const getCurrentTask = (currentList) => {
+	let cl = currentList;
+	const sameList = new List(cl.name, cl.currentTaskIndex, cl.tasks);
+	if(sameList.type === "List"){
+		debugger;
+		return getCurrentTask(sameList.tasks[sameList.currentTaskIndex]);
+	}
+	else{
+		return sameList.tasks[sameList.currentTaskIndex].value;
+	}
+}
+
 const highlightCurrentTask = () => {
 	const currentlyHighlightedTask = document.querySelector(".highlight");
 	if (currentlyHighlightedTask) {
@@ -102,6 +114,10 @@ const resetForm = () => {
 	taskInput.disabled = false;
 };
 
+const retrieveList = (currentList) => {
+	return JSON.parse(localStorage.getItem(currentList.name));
+};
+
 const retrieveLists = () => {
 	if (!localStorage.getItem("lists")) {
 		const lists = ["Default"];
@@ -113,6 +129,21 @@ const retrieveLists = () => {
 	}
 };
 
+const updateLists = () => {
+	lists.forEach(listName => {
+		const list = JSON.parse(localStorage.getItem(listName));
+		
+		const numberOfItems = list.tasks.length;
+
+		for(let itemIndex = 0; itemIndex < numberOfItems; itemIndex++){
+			if(list.tasks[itemIndex].type === "List"){
+				list.tasks[itemIndex] = retrieveList(list.tasks[itemIndex]);
+				localStorage.setItem(list.name, JSON.stringify(list));
+			}
+		}
+	})
+}
+
 const items = document.querySelector(".items");
 const currentListHeader = document.querySelector("h2");
 const chooseListSelect = document.querySelector("#chooseList");
@@ -120,14 +151,8 @@ const newSelect = document.querySelector("#new");
 const listInput = document.querySelector("#list");
 const taskInput = document.querySelector("#task");
 const submitButton = document.querySelector(".submitButton");
-
-const lists = retrieveLists();
-
-let currentList;
-
-populateCurrentListSelect();
-
 const currentTaskDiv = document.querySelector(".currentTask");
+
 const currentTask = document.createElement("p");
 const textNode = document.createTextNode("");
 
@@ -142,6 +167,12 @@ nextButton.textContent = "NEXT";
 buttons.classList.add("buttons");
 buttons.appendChild(deleteButton);
 buttons.appendChild(nextButton);
+
+const lists = retrieveLists();
+
+let currentList;
+
+populateCurrentListSelect();
 
 chooseListSelect.addEventListener("click", () => {
 	if (
@@ -189,9 +220,7 @@ chooseListSelect.addEventListener("click", () => {
 	}
 });
 
-const retrieveList = (currentList) => {
-	return JSON.parse(localStorage.getItem(currentList.name));
-};
+
 
 newSelect.addEventListener("click", () => {
 	if (newSelect.value === "list") {
@@ -229,6 +258,7 @@ submitButton.addEventListener("click", () => {
 		resetForm();
 	} else if (newSelect.value === "task") {
 		addTask();
+		updateLists();
 		taskInput.value = "";
 	} else if (newSelect.value === "list") {
 		const newList = new List(listInput.value, 0, []);
@@ -239,6 +269,7 @@ submitButton.addEventListener("click", () => {
 		localStorage.setItem("lists", JSON.stringify(lists));
 		addNewListOption(newList.getName());
 		items.append(newList.createH3Element());
+		listInput.value = "";
 	}
 
 	highlightCurrentTask();
@@ -284,8 +315,9 @@ nextButton.addEventListener("click", () => {
 	currentList.currentTaskIndex =
 		(currentList.currentTaskIndex + 1) % currentList.tasks.length;
 	localStorage.setItem(currentList.name, JSON.stringify(currentList));
-	textNode.textContent =
-		currentList.tasks[currentList.currentTaskIndex].value;
+	
+	console.log(getCurrentTask(currentList))
+	textNode.textContent = getCurrentTask(currentList);
 
 	highlightCurrentTask();
 });
