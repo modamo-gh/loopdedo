@@ -130,8 +130,10 @@ const populateSidebar = (list) => {
 const resetForm = () => {
 	chooseListSelect.selectedIndex = 0;
 	newSelect.disabled = false;
+	newSelect.selectedIndex = 0;
 	listInput.value = "";
 	taskInput.disabled = false;
+	taskInput.value = "";
 };
 
 const retrieveList = (currentList) => {
