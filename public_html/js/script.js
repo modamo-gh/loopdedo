@@ -1,3 +1,4 @@
+import { List } from "./list.js";
 import { Task } from "./task.js";
 
 const addNewListOption = (listName) => {
