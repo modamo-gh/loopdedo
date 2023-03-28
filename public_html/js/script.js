@@ -13,8 +13,13 @@ const addTask = () => {
 		return;
 	}
 
-	const newTask = new Task(currentList.tasks.length + 1, taskInput.value, currentList.name);
+	const newTask = new Task(
+		currentList.tasks.length + 1,
+		taskInput.value,
+		currentList.name
+	);
 	addTaskToCurrentList(newTask);
+	updateLists();
 
 	items.appendChild(newTask.createPElement());
 
@@ -24,10 +29,10 @@ const addTask = () => {
 	}
 };
 
-const addTaskToCurrentList = task => {
+const addTaskToCurrentList = (task) => {
 	currentList.tasks.push(task);
 	localStorage.setItem(currentList.name, JSON.stringify(currentList));
-}
+};
 
 const clearSidebar = () => {
 	const currentItems = items.childNodes;
@@ -55,33 +60,32 @@ const createNewList = () => {
 const getCurrentTask = (currentList) => {
 	const currentItem = currentList.tasks[currentList.currentTaskIndex];
 	let currentTask;
-	if(currentItem){
-		if(currentItem.type === "List"){
+	if (currentItem) {
+		if (currentItem.type === "List") {
 			currentTask = getCurrentTask(currentItem);
-		}
-		else{
+		} else {
 			currentTask = currentList.tasks[currentList.currentTaskIndex].value;
 		}
-	
+
 		return currentTask;
 	}
-	
-}
+};
 
 const getCurrentTaskID = (currentList) => {
 	const currentItem = currentList.tasks[currentList.currentTaskIndex];
 	let currentTaskID;
-	if(currentItem){
-		if(currentItem.type === "List"){
+	if (currentItem) {
+		if (currentItem.type === "List") {
 			currentTaskID = getCurrentTaskID(currentItem);
+		} else {
+			currentTaskID = `${currentList.name}-${
+				currentList.tasks[currentList.currentTaskIndex].id
+			}`;
 		}
-		else{
-			currentTaskID = `${currentList.name}-${currentList.tasks[currentList.currentTaskIndex].id}`;
-		}
-	
+
 		return currentTaskID;
 	}
-}
+};
 
 const highlightCurrentTask = (currentTaskID) => {
 	const currentlyHighlightedTask = document.querySelector(".highlight");
@@ -155,20 +159,31 @@ const retrieveLists = () => {
 	}
 };
 
+const updateCurrentTaskIndex = (currentList) => {
+	currentList.currentTaskIndex =
+		(currentList.currentTaskIndex + 1) % currentList.tasks.length;
+	localStorage.setItem(currentList.name, JSON.stringify(currentList));
+
+	if (currentList.tasks[currentList.currentTaskIndex].type === "List") {
+		const subList = currentList.tasks[currentList.currentTaskIndex];
+		updateCurrentTaskIndex(subList);
+	}
+};
+
 const updateLists = () => {
-	lists.forEach(listName => {
+	lists.forEach((listName) => {
 		const list = JSON.parse(localStorage.getItem(listName));
-		
+
 		const numberOfItems = list.tasks.length;
 
-		for(let itemIndex = 0; itemIndex < numberOfItems; itemIndex++){
-			if(list.tasks[itemIndex].type === "List"){
+		for (let itemIndex = 0; itemIndex < numberOfItems; itemIndex++) {
+			if (list.tasks[itemIndex].type === "List") {
 				list.tasks[itemIndex] = retrieveList(list.tasks[itemIndex]);
 				localStorage.setItem(list.name, JSON.stringify(list));
 			}
 		}
-	})
-}
+	});
+};
 
 const items = document.querySelector(".items");
 const currentListHeader = document.querySelector("h2");
@@ -229,11 +244,12 @@ chooseListSelect.addEventListener("click", () => {
 		clearSidebar();
 		populateSidebar(currentList);
 		highlightCurrentTask(getCurrentTaskID(currentList));
-		
-		if(currentList.tasks.length){
-			displayCurrentTask(currentList.tasks[currentList.currentTaskIndex].value);
-		}
-		else{
+
+		if (currentList.tasks.length) {
+			displayCurrentTask(
+				currentList.tasks[currentList.currentTaskIndex].value
+			);
+		} else {
 			textNode.textContent = "";
 			buttons.hidden = true;
 		}
@@ -245,8 +261,6 @@ chooseListSelect.addEventListener("click", () => {
 		resetForm();
 	}
 });
-
-
 
 newSelect.addEventListener("click", () => {
 	if (newSelect.value === "list") {
@@ -280,7 +294,6 @@ submitButton.addEventListener("click", () => {
 		const newList = createNewList();
 
 		addNewListOption(newList.getName());
-
 	} else if (newSelect.value === "task") {
 		addTask();
 		updateLists();
@@ -336,10 +349,9 @@ deleteButton.addEventListener("click", () => {
 });
 
 nextButton.addEventListener("click", () => {
-	currentList.currentTaskIndex =
-			(currentList.currentTaskIndex + 1) % currentList.tasks.length;
-	localStorage.setItem(currentList.name, JSON.stringify(currentList));
-	
+	updateCurrentTaskIndex(currentList);
+	updateLists();
+
 	textNode.textContent = getCurrentTask(currentList);
 	highlightCurrentTask(getCurrentTaskID(currentList));
 });
