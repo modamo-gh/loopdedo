@@ -20,7 +20,7 @@ const addTask = () => {
 	items.appendChild(newTask.createPElement());
 
 	if (currentList.tasks.length === 1) {
-		populateCurrentTaskDiv(taskInput.value);
+		displayCurrentTask(taskInput.value);
 		highlightCurrentTask(getCurrentTaskID(currentList));
 	}
 };
@@ -93,7 +93,7 @@ const highlightCurrentTask = (currentTaskID) => {
 	}
 };
 
-const populateCurrentTaskDiv = (taskValue) => {
+const displayCurrentTask = (taskValue) => {
 	textNode.textContent = taskValue;
 	currentTask.appendChild(textNode);
 	currentTaskDiv.appendChild(currentTask);
@@ -227,7 +227,7 @@ chooseListSelect.addEventListener("click", () => {
 		highlightCurrentTask(getCurrentTaskID(currentList));
 		
 		if(currentList.tasks.length){
-			populateCurrentTaskDiv(currentList.tasks[currentList.currentTaskIndex].value);
+			displayCurrentTask(currentList.tasks[currentList.currentTaskIndex].value);
 		}
 		else{
 			textNode.textContent = "";
