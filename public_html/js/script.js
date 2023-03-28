@@ -314,7 +314,7 @@ submitButton.addEventListener("click", () => {
 
 deleteButton.addEventListener("click", () => {
 	const task = document.querySelector(
-		`.sidebar p:nth-child(${currentList.currentTaskIndex + 1})`
+		`p[data-id=${getCurrentTaskID(currentList)}]`
 	);
 
 	if (currentList.tasks.length > 1) {
@@ -329,6 +329,7 @@ deleteButton.addEventListener("click", () => {
 
 	currentList.tasks.splice(currentList.currentTaskIndex, 1);
 	localStorage.setItem(currentList.name, JSON.stringify(currentList));
+	updateLists();
 
 	const currentlyHighlightedTask = document.querySelector(".highlight");
 	if (currentlyHighlightedTask) {
@@ -341,7 +342,7 @@ deleteButton.addEventListener("click", () => {
 		currentList.currentTaskIndex = 0;
 	}
 	const taskToHighlight = document.querySelector(
-		`.sidebar p:nth-child(${currentList.currentTaskIndex + 1})`
+		`p[data-id=${getCurrentTaskID(currentList)}]`
 	);
 	if (taskToHighlight) {
 		taskToHighlight.classList.add("highlight");
