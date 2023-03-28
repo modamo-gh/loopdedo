@@ -14,8 +14,7 @@ const addTask = () => {
 	}
 
 	const newTask = new Task(currentList.tasks.length + 1, taskInput.value, currentList.name);
-	currentList.tasks.push(newTask);
-	localStorage.setItem(currentList.name, JSON.stringify(currentList));
+	addTaskToCurrentList(newTask);
 
 	items.appendChild(newTask.createPElement());
 
@@ -24,6 +23,11 @@ const addTask = () => {
 		highlightCurrentTask(getCurrentTaskID(currentList));
 	}
 };
+
+const addTaskToCurrentList = task => {
+	currentList.tasks.push(task);
+	localStorage.setItem(currentList.name, JSON.stringify(currentList));
+}
 
 const clearSidebar = () => {
 	const currentItems = items.childNodes;
