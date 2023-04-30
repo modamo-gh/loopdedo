@@ -247,7 +247,7 @@ chooseListSelect.addEventListener("click", () => {
 
 		if (currentList.tasks.length) {
 			displayCurrentTask(
-				currentList.tasks[currentList.currentTaskIndex].value
+				getCurrentTask(currentList)
 			);
 		} else {
 			textNode.textContent = "";
