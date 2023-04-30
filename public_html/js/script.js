@@ -64,7 +64,7 @@ const getCurrentTask = (currentList) => {
 		if (currentItem.type === "List") {
 			currentTask = getCurrentTask(currentItem);
 		} else {
-			currentTask = currentList.tasks[currentList.currentTaskIndex].value;
+			currentTask = currentList.tasks[currentList.currentTaskIndex];
 		}
 
 		return currentTask;
@@ -247,7 +247,7 @@ chooseListSelect.addEventListener("click", () => {
 
 		if (currentList.tasks.length) {
 			displayCurrentTask(
-				getCurrentTask(currentList)
+				getCurrentTask(currentList).value
 			);
 		} else {
 			textNode.textContent = "";
@@ -353,6 +353,6 @@ nextButton.addEventListener("click", () => {
 	updateCurrentTaskIndex(currentList);
 	updateLists();
 
-	textNode.textContent = getCurrentTask(currentList);
+	textNode.textContent = getCurrentTask(currentList).value;
 	highlightCurrentTask(getCurrentTaskID(currentList));
 });
