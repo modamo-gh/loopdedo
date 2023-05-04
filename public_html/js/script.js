@@ -78,7 +78,7 @@ const getCurrentTaskID = (currentList) => {
 		if (currentItem.type === "List") {
 			currentTaskID = getCurrentTaskID(currentItem);
 		} else {
-			currentTaskID = `${currentList.name}-${
+			currentTaskID = `${currentList.name}_${
 				currentList.tasks[currentList.currentTaskIndex].id
 			}`;
 		}
@@ -360,3 +360,10 @@ nextButton.addEventListener("click", () => {
 	textNode.textContent = getCurrentTask(currentList).value;
 	highlightCurrentTask(getCurrentTaskID(currentList));
 });
+
+let tasks = document.querySelectorAll("p.task");
+for(const task of tasks){
+	task.addEventListener("click", () => {
+		console.log(task.getAttribute("data-id"));
+	})
+}

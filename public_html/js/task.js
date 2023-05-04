@@ -9,7 +9,7 @@ export class Task {
     createPElement(){
         const p = document.createElement("p");
         p.classList.add("task");
-        p.dataset.id = `${this.parentName}-${this.id}`;
+        p.dataset.id = `${this.parentName}_${this.id}`;
         p.textContent = this.value;
 
         return p;
