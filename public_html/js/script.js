@@ -280,6 +280,10 @@ listInput.addEventListener("keyup", (event) => {
 			resetForm();
 		}
 	}
+	else if(event.key === " "){
+		listInput.value = listInput.value.slice(0, -1);
+		listInput.value += "-";
+	}
 });
 
 taskInput.addEventListener("keyup", (event) => {
